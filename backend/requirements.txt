@@ -1,0 +1,32 @@
+# Framework Web
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Processamento de PDF
+pypdf2==3.0.1
+pdfplumber==0.10.3
+
+# Manipulação de dados
+pandas==2.1.4
+numpy==1.26.3
+
+# Validação de dados
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# HTTP Client
+httpx==0.26.0
+
+# Variáveis de ambiente
+python-dotenv==1.0.0
+
+# CORS
+python-multipart==0.0.6
+
+# Geração de relatórios
+openpyxl==3.1.2
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+requests==2.31.0
