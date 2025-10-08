@@ -1,4 +1,93 @@
-# 🌱 Growli - Análise Financeira Inteligente
+"""
+📝 CRIAR .GITIGNORE PARA GROWLI
+Salve como: criar_gitignore.py
+"""
+import os
+
+def criar_arquivo(caminho, conteudo):
+    with open(caminho, 'w', encoding='utf-8') as f:
+        f.write(conteudo)
+    print(f"  ✅ {caminho}")
+
+print("📝 Criando .gitignore...\n")
+
+# ============================================
+# .GITIGNORE PRINCIPAL (RAIZ DO PROJETO)
+# ============================================
+gitignore_raiz = """# ========================================
+# GROWLI - Git Ignore
+# ========================================
+
+# ===== PYTHON (BACKEND) =====
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/*.so
+backend/.Python
+backend/venv/
+backend/env/
+backend/ENV/
+backend/.env
+backend/*.db
+backend/*.sqlite
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ===== NODE.JS (FRONTEND) =====
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.env.local
+frontend/.env.production.local
+frontend/.vercel
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# ===== IDEs =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== SISTEMA =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== LOGS =====
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== TESTES =====
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
+.hypothesis/
+
+# ===== OUTROS =====
+*.bak
+*.tmp
+.cache/
+"""
+criar_arquivo(".gitignore", gitignore_raiz)
+
+# ============================================
+# .GITKEEP PARA PASTA UPLOADS
+# ============================================
+criar_arquivo("backend/uploads/.gitkeep", "")
+
+# ============================================
+# README.MD
+# ============================================
+readme = """# 🌱 Growli - Análise Financeira Inteligente
 
 Sistema completo de análise financeira para micro e pequenos empreendedores.
 
@@ -35,7 +124,7 @@ cd backend
 python -m venv venv
 
 # Ativar (Windows)
-venv\Scripts\activate
+venv\\Scripts\\activate
 
 # Ativar (Mac/Linux)
 source venv/bin/activate
@@ -224,3 +313,14 @@ MIT License - veja [LICENSE](LICENSE) para detalhes.
 ---
 
 🌱 **Growli - Fazendo seu negócio crescer!**
+"""
+criar_arquivo("README.md", readme)
+
+print("\n✅ ARQUIVOS CRIADOS!")
+print("\n📋 Próximos passos:")
+print("1. git init")
+print("2. git add .")
+print("3. git commit -m 'Initial commit'")
+print("4. Criar repositório no GitHub")
+print("5. git remote add origin URL_DO_REPOSITORIO")
+print("6. git push -u origin main")

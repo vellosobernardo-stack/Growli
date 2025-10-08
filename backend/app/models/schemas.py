@@ -4,14 +4,35 @@ from datetime import datetime
 from enum import Enum
 
 class SetorEnum(str, Enum):
-    COMERCIO_VAREJO = "comercio_varejo"
-    SERVICOS = "servicos"
-    INDUSTRIA = "industria"
-    TECNOLOGIA = "tecnologia"
-    ALIMENTACAO = "alimentacao"
-    SAUDE = "saude"
-    EDUCACAO = "educacao"
+    AGRICULTURA = "agricultura"
+    PECUARIA = "pecuaria"
+    EXTRATIVAS = "extrativas"
+    TRANSFORMACAO = "transformacao"
+    ELETRICIDADE_GAS = "eletricidade_gas"
+    AGUA_RESIDUOS = "agua_residuos"
     CONSTRUCAO = "construcao"
+    COMERCIO_VEICULOS = "comercio_veiculos"
+    TRANSPORTE = "transporte"
+    ALOJAMENTO_ALIMENTACAO = "alojamento_alimentacao"
+    INFORMACAO_COMUNICACAO = "informacao_comunicacao"
+    FINANCEIRAS = "financeiras"
+    IMOBILIARIAS = "imobiliarias"
+    PROFISSIONAIS = "profissionais"
+    ADMINISTRATIVAS = "administrativas"
+    ADMINISTRACAO_PUBLICA = "administracao_publica"
+    EDUCACAO = "educacao"
+    SAUDE = "saude"
+    ARTES_CULTURA = "artes_cultura"
+    OUTRAS_ATIVIDADES = "outras_atividades"
+    SERVICOS_DOMESTICOS = "servicos_domesticos"
+
+class EstadoEnum(str, Enum):
+    AC = "AC"; AL = "AL"; AP = "AP"; AM = "AM"; BA = "BA"
+    CE = "CE"; DF = "DF"; ES = "ES"; GO = "GO"; MA = "MA"
+    MT = "MT"; MS = "MS"; MG = "MG"; PA = "PA"; PB = "PB"
+    PR = "PR"; PE = "PE"; PI = "PI"; RJ = "RJ"; RN = "RN"
+    RS = "RS"; RO = "RO"; RR = "RR"; SC = "SC"; SP = "SP"
+    SE = "SE"; TO = "TO"
 
 class TipoCenario(str, Enum):
     OTIMISTA = "otimista"
@@ -32,6 +53,7 @@ class DadosFinanceirosInput(BaseModel):
     despesas_operacionais: float = Field(..., ge=0)
     despesas_financeiras: float = Field(..., ge=0)
     setor: SetorEnum
+    estado: Optional[EstadoEnum] = None
     periodo_referencia: str
     
     @validator('receita_bruta')
@@ -51,8 +73,13 @@ class IndicadoresFinanceiros(BaseModel):
     composicao_endividamento: float
     giro_estoque: float
     prazo_medio_recebimento: float
+    prazo_medio_pagamento: float
+    ciclo_operacional: float
+    ciclo_caixa: float
     capital_giro: float
     necessidade_capital_giro: float
+    rentabilidade_patrimonio: float
+    rentabilidade_ativo: float
 
 class Cenario(BaseModel):
     tipo: TipoCenario
@@ -66,12 +93,14 @@ class ResultadoAnalise(BaseModel):
     id_analise: str
     data_analise: datetime = Field(default_factory=datetime.now)
     setor: SetorEnum
+    estado: Optional[EstadoEnum] = None
     dados_input: DadosFinanceirosInput
     indicadores: IndicadoresFinanceiros
     cenarios: List[Cenario]
     pontos_fortes: List[str]
     pontos_atencao: List[str]
     acoes_prioritarias: List[str]
+    estrategias_personalizadas: List[str]
     saude_financeira_score: int = Field(..., ge=0, le=100)
 
 class SuccessResponse(BaseModel):
