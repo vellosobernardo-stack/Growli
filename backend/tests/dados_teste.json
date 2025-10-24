@@ -1,0 +1,111 @@
+{
+  "nivel1_basico": {
+    "meta": {
+      "setor": "comercio_veiculos",
+      "estado": "SP",
+      "mes": 10,
+      "ano": 2025,
+      "nivel_maximo_preenchido": 1
+    },
+    "nivel1": {
+      "receita_bruta_mensal": 100000,
+      "custo_vendas_mensal": 65000,
+      "despesas_fixas_mensais": 25000,
+      "caixa": 15000,
+      "conta_corrente": 35000,
+      "contas_a_receber_30d": 30000,
+      "contas_a_pagar_30d": 20000
+    }
+  },
+  "nivel2_intermediario": {
+    "meta": {
+      "setor": "comercio_veiculos",
+      "estado": "SP",
+      "mes": 10,
+      "ano": 2025,
+      "nivel_maximo_preenchido": 2
+    },
+    "nivel1": {
+      "receita_bruta_mensal": 100000,
+      "custo_vendas_mensal": 65000,
+      "despesas_fixas_mensais": 25000,
+      "caixa": 15000,
+      "conta_corrente": 35000,
+      "contas_a_receber_30d": 30000,
+      "contas_a_pagar_30d": 20000
+    },
+    "nivel2": {
+      "prazo_medio_recebimento_dias": 30,
+      "prazo_medio_pagamento_dias": 25,
+      "estoque_custo": 40000,
+      "dividas_totais": 80000,
+      "despesas_financeiras_mensais": 2000,
+      "impostos_mensais": 8000,
+      "numero_funcionarios": 5
+    }
+  },
+  "nivel3_completo": {
+    "meta": {
+      "setor": "comercio_veiculos",
+      "estado": "SP",
+      "mes": 10,
+      "ano": 2025,
+      "nivel_maximo_preenchido": 3
+    },
+    "nivel1": {
+      "receita_bruta_mensal": 100000,
+      "custo_vendas_mensal": 65000,
+      "despesas_fixas_mensais": 25000,
+      "caixa": 15000,
+      "conta_corrente": 35000,
+      "contas_a_receber_30d": 30000,
+      "contas_a_pagar_30d": 20000
+    },
+    "nivel2": {
+      "prazo_medio_recebimento_dias": 30,
+      "prazo_medio_pagamento_dias": 25,
+      "estoque_custo": 40000,
+      "dividas_totais": 80000,
+      "despesas_financeiras_mensais": 2000,
+      "impostos_mensais": 8000,
+      "numero_funcionarios": 5
+    },
+    "nivel3": {
+      "receita_ultimos_3_meses": [95000, 98000, 100000],
+      "aliquota_impostos_percentual": 8,
+      "despesas_variaveis_percentual_receita": 5,
+      "capex_planejado_prox_6m": 50000,
+      "imobilizado": 150000,
+      "patrimonio_liquido": 120000,
+      "meta_margem_bruta_percentual": 40,
+      "meta_prazo_recebimento_dias": 20
+    }
+  },
+  "caso_critico": {
+    "meta": {
+      "setor": "alojamento_alimentacao",
+      "estado": "RJ",
+      "mes": 10,
+      "ano": 2025,
+      "nivel_maximo_preenchido": 2
+    },
+    "nivel1": {
+      "receita_bruta_mensal": 50000,
+      "custo_vendas_mensal": null,
+      "despesas_fixas_mensais": 35000,
+      "caixa": 2000,
+      "conta_corrente": 5000,
+      "contas_a_receber_30d": null,
+      "contas_a_pagar_30d": 25000
+    },
+    "nivel2": {
+      "prazo_medio_recebimento_dias": null,
+      "prazo_medio_pagamento_dias": null,
+      "estoque_custo": 8000,
+      "dividas_totais": 120000,
+      "despesas_financeiras_mensais": 4500,
+      "impostos_mensais": null,
+      "numero_funcionarios": 3
+    }
+  }
+}

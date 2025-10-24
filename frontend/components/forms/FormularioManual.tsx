@@ -46,13 +46,50 @@ const ESTADOS = [
   { value: 'TO', label: 'Tocantins' },
 ]
 
+const MESES = [
+  { value: '01', label: 'Janeiro' },
+  { value: '02', label: 'Fevereiro' },
+  { value: '03', label: 'Março' },
+  { value: '04', label: 'Abril' },
+  { value: '05', label: 'Maio' },
+  { value: '06', label: 'Junho' },
+  { value: '07', label: 'Julho' },
+  { value: '08', label: 'Agosto' },
+  { value: '09', label: 'Setembro' },
+  { value: '10', label: 'Outubro' },
+  { value: '11', label: 'Novembro' },
+  { value: '12', label: 'Dezembro' },
+]
+
+// Gerar anos de 2025 até 1981
+const ANOS = Array.from({ length: 2025 - 1981 + 1 }, (_, i) => {
+  const year = 2025 - i
+  return { value: year.toString(), label: year.toString() }
+})
+
 export function FormularioManual({ onSubmit, loading }: { onSubmit: (d: any) => void, loading?: boolean }) {
-  const { register, handleSubmit } = useForm<DadosFinanceiros>()
+  const { register, handleSubmit, watch } = useForm<DadosFinanceiros & { mes: string, ano: string }>({
+    defaultValues: {
+      mes: new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : `${new Date().getMonth() + 1}`,
+      ano: new Date().getFullYear().toString()
+    }
+  })
+
+  const handleFormSubmit = (data: any) => {
+    // Combinar mês e ano no formato esperado (YYYY-MM)
+    const { mes, ano, ...restData } = data
+    const periodo_referencia = `${ano}-${mes}`
+    
+    onSubmit({
+      ...restData,
+      periodo_referencia
+    })
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <div>
-        <h3 className="font-semibold mb-4">Balanço Patrimonial</h3>
+        <h3 className="font-semibold mb-4 text-card-foreground">Balanço Patrimonial</h3>
         <div className="grid grid-cols-2 gap-4">
           <Input label="Caixa" type="number" step="0.01" {...register('caixa', { valueAsNumber: true })} />
           <Input label="Contas a Receber" type="number" step="0.01" {...register('contas_receber', { valueAsNumber: true })} />
@@ -66,7 +103,7 @@ export function FormularioManual({ onSubmit, loading }: { onSubmit: (d: any) => 
       </div>
 
       <div>
-        <h3 className="font-semibold mb-4">DRE</h3>
+        <h3 className="font-semibold mb-4 text-card-foreground">DRE</h3>
         <div className="grid grid-cols-2 gap-4">
           <Input label="Receita Bruta" type="number" step="0.01" {...register('receita_bruta', { valueAsNumber: true })} />
           <Input label="Custo Vendas" type="number" step="0.01" {...register('custo_vendas', { valueAsNumber: true })} />
@@ -80,7 +117,10 @@ export function FormularioManual({ onSubmit, loading }: { onSubmit: (d: any) => 
         <Select label="Estado (Opcional)" {...register('estado')} options={[{ value: '', label: 'Selecione...' }, ...ESTADOS]} />
       </div>
       
-      <Input label="Período" placeholder="2024-12" {...register('periodo_referencia')} />
+      <div className="grid grid-cols-2 gap-4">
+        <Select label="Mês" {...register('mes')} options={MESES} />
+        <Select label="Ano" {...register('ano')} options={ANOS} />
+      </div>
 
       <Button type="submit" loading={loading} className="w-full">
         Calcular Análise
