@@ -6,6 +6,7 @@ import statistics
 
 
 # ============= CÁLCULOS NÍVEL 1 =============
+from typing import Optional
 
 def calcular_margem_bruta(receita: float, custo: float) -> float:
     """
@@ -86,18 +87,109 @@ def calcular_folego_caixa(
     return caixa_liquido / despesa_diaria
 
 
-def classificar_liquidez(liquidez: float) -> str:
+# ============= CLASSIFICAÇÕES (PARA CORES DOS CARDS) =============
+
+def classificar_margem_bruta(margem_percentual: float) -> str:
     """
-    Classifica a liquidez imediata em verde/amarelo/vermelho
+    Classifica a margem bruta
+    
+    Args:
+        margem_percentual: Valor de 0 a 100
+    
+    Returns:
+        "bom" (verde) | "alerta" (amarelo) | "critico" (vermelho)
+    """
+    if margem_percentual >= 40:
+        return "bom"
+    elif margem_percentual >= 20:
+        return "alerta"
+    else:
+        return "critico"
+
+
+def classificar_resultado_operacional(resultado: float, receita: float) -> str:
+    """
+    Classifica o resultado operacional
+    
+    Args:
+        resultado: Valor em R$
+        receita: Receita total em R$
+    
+    Returns:
+        "bom" (verde) | "alerta" (amarelo) | "critico" (vermelho)
+    """
+    if resultado <= 0:
+        return "critico"
+    
+    if receita == 0:
+        return "critico"
+    
+    percentual = (resultado / receita) * 100
+    
+    if percentual > 10:
+        return "bom"
+    else:
+        return "alerta"
+
+
+def classificar_folego_caixa(dias: float) -> str:
+    """
+    Classifica o fôlego de caixa
+    
+    Args:
+        dias: Número de dias
+    
+    Returns:
+        "bom" (verde) | "alerta" (amarelo) | "critico" (vermelho)
+    """
+    if dias >= 90:
+        return "bom"
+    elif dias >= 30:
+        return "alerta"
+    else:
+        return "critico"
+
+
+def classificar_liquidez_imediata(liquidez: float) -> str:
+    """
+    Classifica a liquidez imediata
+    
+    Args:
+        liquidez: Índice de liquidez
+    
+    Returns:
+        "bom" (verde) | "alerta" (amarelo) | "critico" (vermelho)
     """
     if liquidez >= 1.0:
-        return "verde"
-    elif liquidez >= 0.6:
-        return "amarelo"
+        return "bom"
+    elif liquidez >= 0.5:
+        return "alerta"
     else:
-        return "vermelho"
+        return "critico"
 
 
+def classificar_ponto_equilibrio(ponto_equilibrio: float, receita_atual: float) -> str:
+    """
+    Classifica o ponto de equilíbrio
+    
+    Args:
+        ponto_equilibrio: Valor em R$
+        receita_atual: Receita atual em R$
+    
+    Returns:
+        "bom" (verde) | "alerta" (amarelo) | "critico" (vermelho)
+    """
+    if receita_atual == 0 or ponto_equilibrio is None:
+        return "critico"
+    
+    percentual = (ponto_equilibrio / receita_atual) * 100
+    
+    if percentual < 70:
+        return "bom"
+    elif percentual < 100:
+        return "alerta"
+    else:
+        return "critico"
 # ============= CÁLCULOS NÍVEL 2 =============
 
 def calcular_dio(estoque: float, custo_mensal: float) -> Optional[float]:

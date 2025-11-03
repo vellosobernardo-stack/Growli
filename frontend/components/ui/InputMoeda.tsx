@@ -1,6 +1,7 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
+import { Info } from 'lucide-react';
 
 interface InputMoedaProps {
   value: string | number;
@@ -15,6 +16,9 @@ interface InputMoedaProps {
 const InputMoeda = forwardRef<HTMLInputElement, InputMoedaProps>(
   ({ value, onChange, label, opcional = false, tooltip, placeholder, className = '' }, ref) => {
     
+    const [mostrarTooltip, setMostrarTooltip] = useState(false);
+    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+    
     const formatarParaExibicao = (valor: number): string => {
       if (valor === 0) return '';
       
@@ -22,6 +26,23 @@ const InputMoeda = forwardRef<HTMLInputElement, InputMoedaProps>(
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
+    };
+
+    const handleMouseEnter = () => {
+      // Limpa qualquer timeout existente
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        setTimeoutId(null);
+      }
+      setMostrarTooltip(true);
+    };
+
+    const handleMouseLeave = () => {
+      // Adiciona um pequeno delay antes de esconder
+      const id = setTimeout(() => {
+        setMostrarTooltip(false);
+      }, 200);
+      setTimeoutId(id);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,21 +82,85 @@ const InputMoeda = forwardRef<HTMLInputElement, InputMoedaProps>(
 
     return (
       <div className={`space-y-2 ${className}`}>
-        <label className="block text-sm font-medium text-gray-700">
+        <label 
+          className="block text-sm font-medium" 
+          style={{ color: 'hsl(215 25% 15%)' }}
+        >
           {label}
-          {opcional && <span className="text-gray-400 ml-1">(Opcional)</span>}
-          {!opcional && <span className="text-red-500 ml-1">*</span>}
+          {opcional && (
+            <span className="ml-1" style={{ color: 'hsl(215 15% 45%)' }}>
+              (Opcional)
+            </span>
+          )}
+          {!opcional && (
+            <span className="ml-1" style={{ color: 'hsl(0 84.2% 60.2%)' }}>
+              *
+            </span>
+          )}
+          
+          {/* Tooltip com ícone Info */}
           {tooltip && (
-            <span 
-              className="ml-2 text-xs text-gray-500 cursor-help" 
-              title={tooltip}
-            >
-              ℹ️
+            <span className="relative inline-block ml-2">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center w-4 h-4 rounded-full transition-colors"
+                style={{ 
+                  backgroundColor: mostrarTooltip ? 'hsl(142 70% 45%)' : 'hsl(210 15% 90%)',
+                  color: mostrarTooltip ? 'white' : 'hsl(215 15% 45%)'
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onFocus={handleMouseEnter}
+                onBlur={handleMouseLeave}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMostrarTooltip(!mostrarTooltip);
+                }}
+              >
+                <Info className="w-3 h-3" />
+              </button>
+              
+              {/* Tooltip box */}
+              {mostrarTooltip && (
+                <div 
+                  className="absolute left-1/2 bottom-full mb-2 z-50 animate-fade-in pointer-events-none"
+                  style={{ 
+                    transform: 'translateX(-50%)',
+                    width: 'max-content',
+                    maxWidth: '280px'
+                  }}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div 
+                    className="rounded-lg p-3 shadow-xl"
+                    style={{ backgroundColor: 'hsl(215 25% 15%)' }}
+                  >
+                    <p className="text-xs text-white leading-relaxed whitespace-normal">
+                      {tooltip}
+                    </p>
+                    {/* Seta do tooltip */}
+                    <div 
+                      className="absolute top-full left-1/2"
+                      style={{ transform: 'translateX(-50%)' }}
+                    >
+                      <div 
+                        className="border-8 border-transparent"
+                        style={{ borderTopColor: 'hsl(215 25% 15%)' }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </span>
           )}
         </label>
+
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+          <span 
+            className="absolute left-3 top-1/2 -translate-y-1/2 font-medium"
+            style={{ color: 'hsl(215 15% 45%)' }}
+          >
             R$
           </span>
           <input
@@ -86,11 +171,16 @@ const InputMoeda = forwardRef<HTMLInputElement, InputMoedaProps>(
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder || "0,00"}
-            className="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right font-mono"
+            className="w-full h-11 pl-12 pr-4 rounded-lg text-right font-mono transition-all focus:outline-none focus:ring-2"
+            style={{
+              border: '1px solid hsl(215 20% 88%)',
+              backgroundColor: 'white'
+            }}
           />
         </div>
+
         {valorExibicao && (
-          <p className="text-xs text-gray-500 text-right">
+          <p className="text-xs text-right" style={{ color: 'hsl(215 15% 45%)' }}>
             = R$ {valorExibicao}
           </p>
         )}
@@ -102,3 +192,4 @@ const InputMoeda = forwardRef<HTMLInputElement, InputMoedaProps>(
 InputMoeda.displayName = 'InputMoeda';
 
 export default InputMoeda;
+

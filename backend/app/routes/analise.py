@@ -27,7 +27,7 @@ from app.services.financial_calc import (
     calcular_ponto_equilibrio,
     calcular_liquidez_imediata,
     calcular_folego_caixa,
-    classificar_liquidez,
+    classificar_liquidez_imediata,
     # Nível 2
     calcular_dio,
     calcular_ciclo_operacional,
@@ -219,33 +219,46 @@ async def processar_analise(request: AnaliseRequest):
                     dados_n2.get("despesas_financeiras_mensais", 0) if request.nivel2 else 0,
                     dados_n2.get("impostos_mensais", 0) if request.nivel2 else 0,
                     dados_n3["patrimonio_liquido"]
-                ) if dados_n3["patrimonio_liquido"] and dados_n3["patrimonio_liquido"] != 0 else None,
+                ) if dados_n3["patrimonio_liquido"] > 0 else None,
                 "payback_capex": calcular_payback_capex(
                     dados_n3["capex_planejado_prox_6m"],
-                    kpis_n1["resultado_operacional"] * 12 * 0.1
-                ) if dados_n3["capex_planejado_prox_6m"] > 0 else None
+                    kpis_n1["resultado_operacional"] * 12
+                ) if dados_n3["capex_planejado_prox_6m"] and dados_n3["capex_planejado_prox_6m"] > 0 else None
             }
             
             response_data["nivel3"] = montar_resultado_nivel3(kpis_n3, tendencia, all_assumptions)
+        
+        # ========== GERAR DIAGNÓSTICO FINAL ==========
+        if nivel_maximo >= 2:  # Só gera diagnóstico se tiver pelo menos nível 2
+            kpis_diagnostico = kpis_n3 if nivel_maximo >= 3 else kpis_n2
             
-            # Diagnóstico e Estratégia (só no nível 3)
-            kpis_completos = {
-                "nivel1": kpis_n1,
-                "nivel2": kpis_n2 if request.nivel2 else {},
-                "nivel3": kpis_n3
-            }
+            # ✅ CORRIGIDO: passar apenas kpis_diagnostico (sem setor)
+            diagnostico = gerar_diagnostico_final(kpis_diagnostico)
+            
+            # ✅ CORRIGIDO: passar receita como segundo argumento
+            receita_base = dados_n1["receita_bruta_mensal"]
+            oportunidades = gerar_oportunidades(kpis_diagnostico, receita_base)
+            
+            plano_90d = gerar_plano_30_60_90(kpis_diagnostico)
             
             response_data["diagnostico_estrategia"] = DiagnosticoEstrategia(
-                diagnostico=gerar_diagnostico_final(kpis_completos),
-                oportunidades=gerar_oportunidades(kpis_n2 if request.nivel2 else {}, dados_n1["receita_bruta_mensal"]),
-                plano_30_60_90=gerar_plano_30_60_90(kpis_completos)
+                diagnostico=diagnostico,
+                oportunidades=oportunidades,
+                plano_30_60_90=plano_90d
             )
         
-        # Atualizar status de validação
+        # Atualizar validação final
+        todos_dados = {"nivel1": dados_n1}
+        if request.nivel2:
+            todos_dados["nivel2"] = dados_n2
+        if request.nivel3:
+            todos_dados["nivel3"] = dados_n3
+        
+        response_data["status_validacao"]["avisos"] = validar_coerencia(todos_dados)
         response_data["status_validacao"]["assumptions"] = all_assumptions
         
         return AnaliseResponse(**response_data)
-        
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao processar análise: {str(e)}")
 
@@ -264,7 +277,12 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
             nome="Resultado Operacional",
             valor=kpis["resultado_operacional"],
             formato="moeda",
-            classificacao="verde" if kpis["resultado_operacional"] > 0 else "vermelho"
+            # Verde: > 10% da receita | Amarelo: 0-10% da receita | Vermelho: negativo
+            classificacao=(
+                "verde" if kpis["resultado_operacional"] > 0 and (kpis["resultado_operacional"] / dados["receita_bruta_mensal"] * 100) > 10
+                else "amarelo" if kpis["resultado_operacional"] > 0
+                else "vermelho"
+            ) if dados["receita_bruta_mensal"] > 0 else "vermelho"
         ),
         KPI(
             nome="Fôlego de Caixa",
@@ -276,20 +294,29 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
             nome="Liquidez Imediata",
             valor=kpis["liquidez_imediata"],
             formato="numero",
-            classificacao=classificar_liquidez(kpis["liquidez_imediata"])
+            classificacao=classificar_liquidez_imediata(kpis["liquidez_imediata"])
         ),
     ]
     
+    # ✅ CORRIGIDO: Adicionar classificação no Ponto de Equilíbrio
     if kpis["ponto_equilibrio"]:
+        # Classificar baseado na relação com a receita atual
+        receita = dados["receita_bruta_mensal"]
+        pe = kpis["ponto_equilibrio"]
+        percentual_pe = (pe / receita * 100) if receita > 0 else 100
+        
+        classificacao_pe = "verde" if percentual_pe < 70 else "amarelo" if percentual_pe < 90 else "vermelho"
+        
         kpis_lista.append(
             KPI(
                 nome="Ponto de Equilíbrio",
                 valor=kpis["ponto_equilibrio"],
-                formato="moeda"
+                formato="moeda",
+                classificacao=classificacao_pe  # ✅ AGORA TEM CLASSIFICAÇÃO
             )
         )
     
-    # Gráfico de barras
+    # ✅ CORRIGIDO: Gráfico com cores AZUIS ao invés de verde/vermelho/laranja
     grafico_entradas_saidas = GraficoBarras(
         titulo="Entradas vs Saídas (R$)",
         labels=["Receita", "Custo das Vendas", "Despesas Fixas"],
@@ -298,20 +325,20 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
             dados["custo_vendas_mensal"],
             dados["despesas_fixas_mensais"]
         ],
-        cores=["#10b981", "#ef4444", "#f59e0b"]
+        cores=["#3b82f6", "#60a5fa", "#93c5fd"]  # ✅ AZUIS ao invés de verde/vermelho/laranja
     )
     
-    # Tabela resumo
+    # ✅ CORRIGIDO: Tabela com NÚMEROS PUROS ao invés de strings formatadas
     tabela_resumo = Tabela(
         titulo="Resumo Financeiro",
         colunas=["Item", "Valor (R$)"],
         linhas=[
-            ["Receita Bruta", f"{dados['receita_bruta_mensal']:,.2f}"],
-            ["Custo das Vendas", f"{dados['custo_vendas_mensal']:,.2f}"],
-            ["Despesas Fixas", f"{dados['despesas_fixas_mensais']:,.2f}"],
-            ["Disponibilidades", f"{dados['caixa'] + dados['conta_corrente']:,.2f}"],
-            ["Contas a Receber (30d)", f"{dados['contas_a_receber_30d']:,.2f}"],
-            ["Contas a Pagar (30d)", f"{dados['contas_a_pagar_30d']:,.2f}"],
+            ["Receita Bruta", dados['receita_bruta_mensal']],  # ✅ Número puro
+            ["Custos Diretos", dados['custo_vendas_mensal']],  # ✅ Número puro
+            ["Despesas Fixas", dados['despesas_fixas_mensais']],  # ✅ Número puro
+            ["Disponibilidades", dados['caixa'] + dados['conta_corrente']],  # ✅ Número puro
+            ["Contas a Receber (30d)", dados['contas_a_receber_30d']],  # ✅ Número puro
+            ["Contas a Pagar (30d)", dados['contas_a_pagar_30d']],  # ✅ Número puro
         ]
     )
     
@@ -368,7 +395,7 @@ def montar_resultado_nivel2(kpis: Dict, assumptions: list) -> ResultadoNivel:
             )
         )
     
-    # Gráfico dos prazos
+    # Gráfico dos prazos - ✅ CORES AZUIS
     labels_prazos = ["DSO", "DPO"]
     valores_prazos = [kpis["dso"], kpis["dpo"]]
     
@@ -380,17 +407,17 @@ def montar_resultado_nivel2(kpis: Dict, assumptions: list) -> ResultadoNivel:
         titulo="Prazos Operacionais (dias)",
         labels=labels_prazos,
         valores=valores_prazos,
-        cores=["#3b82f6", "#8b5cf6", "#ec4899"]
+        cores=["#3b82f6", "#60a5fa", "#93c5fd"]  # ✅ AZUIS
     )
     
-    # Tabela de simulações
+    # Tabela de simulações - ✅ NÚMEROS PUROS
     tabela_simulacoes = Tabela(
         titulo="Simulações de Impacto no Caixa",
         colunas=["Ação", "Impacto (R$)"],
         linhas=[
-            ["Reduzir DSO em 10 dias", f"+{kpis['simulacao_reducao_dso']:,.2f}"],
-            ["Aumentar DPO em 7 dias", f"+{kpis['simulacao_aumento_dpo']:,.2f}"],
-            ["Total Potencial", f"+{kpis['simulacao_reducao_dso'] + kpis['simulacao_aumento_dpo']:,.2f}"]
+            ["Reduzir DSO em 10 dias", kpis['simulacao_reducao_dso']],  # ✅ Número puro
+            ["Aumentar DPO em 7 dias", kpis['simulacao_aumento_dpo']],  # ✅ Número puro
+            ["Total Potencial", kpis['simulacao_reducao_dso'] + kpis['simulacao_aumento_dpo']]  # ✅ Número puro
         ]
     )
     
