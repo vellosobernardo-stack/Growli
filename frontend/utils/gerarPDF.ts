@@ -367,7 +367,7 @@ export async function gerarRelatorioPDF(dados: DadosRelatorio) {
     <body>
       <!-- HEADER -->
       <div class="header">
-        <h1>🌱 Growli - Relatório de Análise Financeira</h1>
+        <h1> Leme - Relatório de Análise Financeira</h1>
         ${dados.empresa ? `<p><strong>Empresa:</strong> ${dados.empresa}</p>` : ''}
         ${dados.setor ? `<p><strong>Setor:</strong> ${dados.setor}</p>` : ''}
         ${dados.estado ? `<p><strong>Estado:</strong> ${dados.estado}</p>` : ''}
@@ -524,8 +524,8 @@ export async function gerarRelatorioPDF(dados: DadosRelatorio) {
 
       <!-- FOOTER -->
       <div class="footer">
-        <p>Relatório gerado por Growli - Análise Financeira Inteligente</p>
-        <p>www.growli.com</p>
+        <p>Relatório gerado por Leme - Análise Financeira Inteligente</p>
+        <p>www.leme.app.br</p>
       </div>
     </body>
     </html>
@@ -540,7 +540,7 @@ export async function gerarRelatorioPDF(dados: DadosRelatorio) {
   // Configurações do PDF
   const options = {
     margin: [10, 10, 10, 10],
-    filename: `growli-relatorio-${new Date().toISOString().split('T')[0]}.pdf`,
+    filename: `leme-relatorio-${new Date().toISOString().split('T')[0]}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
       scale: 2,
