@@ -3,13 +3,13 @@ from typing import List
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Growli"
+    PROJECT_NAME: str = "Leme"
     
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8000",
-        "https://growli.com",
+        "https://leme.app.br",
     ]
     
     MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024

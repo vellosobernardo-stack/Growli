@@ -37,9 +37,9 @@ const ProblemSection = () => {
               className="bg-card p-8 rounded-lg shadow-soft hover:shadow-medium transition-all duration-300 animate-scale-in border border-border"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                <problem.icon className="h-7 w-7 text-primary" />
-              </div>
+              <div className="w-14 h-14 bg-secondary/10 rounded-lg flex items-center justify-center mb-6">
+  <problem.icon className="h-7 w-7 text-secondary" />
+</div>
               <h3 className="text-xl font-semibold text-card-foreground mb-3">
                 {problem.title}
               </h3>

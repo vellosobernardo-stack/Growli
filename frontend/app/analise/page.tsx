@@ -1,7 +1,8 @@
 'use client';
 
-import { ArrowLeft, TrendingUp } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAnalise } from '@/hooks/useAnalise';
 import FormularioNivel1 from '@/components/FormularioNivel1';
 import FormularioNivel2 from '@/components/FormularioNivel2';
@@ -9,7 +10,7 @@ import FormularioNivel3 from '@/components/FormularioNivel3';
 import ResultadosNivel1 from '@/components/ResultadosNivel1';
 import ResultadosNivel2 from '@/components/ResultadosNivel2';
 import ResultadosNivel3 from '@/components/ResultadosNivel3';
-import DiagnosticoFinal from '@/components/DiagnosticoFinal';
+// ❌ REMOVIDO: import DiagnosticoFinal from '@/components/DiagnosticoFinal';
 import Loading from '@/components/ui/Loading';
 import AlertaErro from '@/components/ui/AlertaErro';
 import Avisos from '@/components/ui/Avisos';
@@ -72,20 +73,23 @@ export default function AnaliseFinanceira() {
           <button
             onClick={handleVoltar}
             className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
-            style={{ color: 'hsl(142 70% 45%)' }}
+            style={{ color: '#112d4e' }}
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </button>
 
-          {/* Logo Growli */}
+          {/* Logo Leme */}
           <div className="flex items-center gap-3">
-            <TrendingUp 
-              className="w-6 h-6" 
-              style={{ color: 'hsl(142 70% 45%)' }}
+            <Image 
+              src="/logo.svg" 
+              alt="Leme" 
+              width={32} 
+              height={32} 
+              className="w-8 h-8"
             />
             <span className="text-2xl font-bold text-gray-900">
-              Growli
+              Leme
             </span>
           </div>
         </div>
@@ -97,7 +101,7 @@ export default function AnaliseFinanceira() {
         {/* Título Principal */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'hsl(215 25% 15%)' }}>
-            Análise Financeira Growli
+            Análise Financeira Leme
           </h1>
           <p className="text-lg" style={{ color: 'hsl(215 15% 45%)' }}>
             Transforme dados em decisões estratégicas
@@ -116,7 +120,7 @@ export default function AnaliseFinanceira() {
                     : 'text-gray-500'
                 }`}
                 style={{
-                  backgroundColor: nivelAtual >= 1 ? 'hsl(142 70% 45%)' : 'hsl(210 15% 95%)',
+                  backgroundColor: nivelAtual >= 1 ? '#112d4e' : 'hsl(210 15% 95%)',
                   boxShadow: nivelAtual >= 1 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
                 }}
               >
@@ -124,7 +128,7 @@ export default function AnaliseFinanceira() {
               </div>
               <span 
                 className={`mt-3 text-sm font-medium ${nivelAtual >= 1 ? 'font-semibold' : ''}`}
-                style={{ color: nivelAtual >= 1 ? 'hsl(142 70% 45%)' : 'hsl(215 15% 65%)' }}
+                style={{ color: nivelAtual >= 1 ? '#112d4e' : 'hsl(215 15% 65%)' }}
               >
                 Básico
               </span>
@@ -133,7 +137,7 @@ export default function AnaliseFinanceira() {
             {/* Conector 1 */}
             <div 
               className="w-20 h-1 rounded-full mx-2 transition-all"
-              style={{ backgroundColor: nivelAtual >= 2 ? 'hsl(142 70% 45%)' : 'hsl(215 20% 88%)' }}
+              style={{ backgroundColor: nivelAtual >= 2 ? '#112d4e' : 'hsl(215 20% 88%)' }}
             />
 
             {/* Step 2 - Intermediário */}
@@ -145,7 +149,7 @@ export default function AnaliseFinanceira() {
                     : 'text-gray-500'
                 }`}
                 style={{
-                  backgroundColor: nivelAtual >= 2 ? 'hsl(142 70% 45%)' : 'hsl(210 15% 95%)',
+                  backgroundColor: nivelAtual >= 2 ? '#112d4e' : 'hsl(210 15% 95%)',
                   boxShadow: nivelAtual >= 2 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
                 }}
               >
@@ -153,7 +157,7 @@ export default function AnaliseFinanceira() {
               </div>
               <span 
                 className={`mt-3 text-sm font-medium ${nivelAtual >= 2 ? 'font-semibold' : ''}`}
-                style={{ color: nivelAtual >= 2 ? 'hsl(142 70% 45%)' : 'hsl(215 15% 65%)' }}
+                style={{ color: nivelAtual >= 2 ? '#112d4e' : 'hsl(215 15% 65%)' }}
               >
                 Intermediário
               </span>
@@ -162,7 +166,7 @@ export default function AnaliseFinanceira() {
             {/* Conector 2 */}
             <div 
               className="w-20 h-1 rounded-full mx-2 transition-all"
-              style={{ backgroundColor: nivelAtual >= 3 ? 'hsl(142 70% 45%)' : 'hsl(215 20% 88%)' }}
+              style={{ backgroundColor: nivelAtual >= 3 ? '#112d4e' : 'hsl(215 20% 88%)' }}
             />
 
             {/* Step 3 - Avançado */}
@@ -174,7 +178,7 @@ export default function AnaliseFinanceira() {
                     : 'text-gray-500'
                 }`}
                 style={{
-                  backgroundColor: nivelAtual >= 3 ? 'hsl(142 70% 45%)' : 'hsl(210 15% 95%)',
+                  backgroundColor: nivelAtual >= 3 ? '#112d4e' : 'hsl(210 15% 95%)',
                   boxShadow: nivelAtual >= 3 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
                 }}
               >
@@ -182,7 +186,7 @@ export default function AnaliseFinanceira() {
               </div>
               <span 
                 className={`mt-3 text-sm font-medium ${nivelAtual >= 3 ? 'font-semibold' : ''}`}
-                style={{ color: nivelAtual >= 3 ? 'hsl(142 70% 45%)' : 'hsl(215 15% 65%)' }}
+                style={{ color: nivelAtual >= 3 ? '#112d4e' : 'hsl(215 15% 65%)' }}
               >
                 Avançado
               </span>
@@ -311,56 +315,23 @@ export default function AnaliseFinanceira() {
               </div>
             )}
 
-            {/* RESULTADOS COMPLETOS (NÍVEL 3) */}
+            {/* ✅ RESULTADOS NÍVEL 3 - SIMPLIFICADO (SEM DiagnosticoFinal) */}
             {nivelAtual === 3 && resultado?.nivel3 && (
-              <div className="space-y-8 animate-fade-in">
-                {/* Resultados do Nível 3 */}
-                <div 
-                  className="bg-white rounded-lg"
-                  style={{
-                    border: '1px solid hsl(215 20% 88% / 0.5)',
-                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <ResultadosNivel3 resultado={resultado.nivel3} />
-                </div>
-
-                {/* Diagnóstico Final */}
-                {resultado.diagnostico_estrategia && (
-                  <div 
-                    className="bg-white rounded-lg"
-                    style={{
-                      border: '1px solid hsl(215 20% 88% / 0.5)',
-                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    <DiagnosticoFinal diagnostico={resultado.diagnostico_estrategia} />
-                  </div>
-                )}
-
-                {/* Botão para nova análise */}
-                <div 
-                  className="p-6 rounded-lg text-white text-center"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(142 70% 45%) 0%, hsl(200 80% 50%) 100%)',
-                    boxShadow: '0 10px 25px -5px rgba(34, 197, 94, 0.3)'
-                  }}
-                >
-                  <h3 className="text-2xl font-bold mb-2">🎉 Análise Completa!</h3>
-                  <p className="mb-4">
-                    Você recebeu insights completos sobre a saúde financeira do seu negócio.
-                  </p>
-                  <button
-                    onClick={resetar}
-                    className="px-6 py-3 bg-white font-semibold rounded-lg transition-all hover:scale-105"
-                    style={{ 
-                      color: 'hsl(142 70% 45%)',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    Fazer Nova Análise
-                  </button>
-                </div>
+              <div className="animate-fade-in">
+                {/* O ResultadosNivel3 já inclui TUDO:
+                    - Resumo executivo
+                    - Projeções
+                    - Dashboard colapsado
+                    - Diagnóstico destacado
+                    - Plano de ação 30-60-90
+                    - CTA final com botões
+                */}
+                <ResultadosNivel3 
+  resultado={resultado.nivel3}
+  nivel1={resultado.nivel1}
+  nivel2={resultado.nivel2}
+  diagnostico_estrategia={resultado.diagnostico_estrategia}
+/>
               </div>
             )}
 

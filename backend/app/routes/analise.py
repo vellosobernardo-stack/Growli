@@ -131,6 +131,10 @@ async def processar_analise(request: AnaliseRequest):
         }
         
         # ========== PROCESSAR NÍVEL 2 (se aplicável) ==========
+        # Inicializar variáveis para evitar erro quando usuário pula o nível 2
+        kpis_n2 = None
+        dados_n2 = {}
+        
         if nivel_maximo >= 2 and request.nivel2:
             dados_n2 = request.nivel2.dict()
             dados_n2, assumptions_n2 = aplicar_defaults_nivel2(dados_n2, setor)
@@ -185,7 +189,6 @@ async def processar_analise(request: AnaliseRequest):
             tendencia = calcular_tendencia_receita(dados_n3["receita_ultimos_3_meses"])
             
             # Preparar dados para projeção
-            dados_n2 = request.nivel2.dict() if request.nivel2 else {}
             projecoes = projetar_cenarios(
                 receita_base=dados_n1["receita_bruta_mensal"],
                 custo_base=dados_n1["custo_vendas_mensal"],

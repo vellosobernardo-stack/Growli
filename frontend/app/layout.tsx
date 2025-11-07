@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Growli - Análise Financeira Inteligente',
+  title: 'Leme - Análise Financeira Inteligente',
   description: 'Entenda as finanças da sua empresa sem complicação. Análises financeiras automáticas, cenários de desempenho e estratégias práticas.',
 }
 

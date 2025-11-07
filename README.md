@@ -1,8 +1,8 @@
-# 🌱 Growli - Análise Financeira Inteligente
+# 🌱 Leme - Análise Financeira Inteligente
 
 Sistema completo de análise financeira para micro e pequenos empreendedores.
 
-![Growli](https://img.shields.io/badge/Status-Ativo-success)
+![Leme](https://img.shields.io/badge/Status-Ativo-success)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 
@@ -69,7 +69,7 @@ npm run dev
 ## 🏗️ Estrutura do Projeto
 
 ```
-growli/
+Leme/
 ├── backend/                 # API FastAPI + Python
 │   ├── app/
 │   │   ├── api/            # Endpoints
@@ -168,7 +168,7 @@ growli/
 ```bash
 DEBUG=True
 API_V1_STR=/api/v1
-PROJECT_NAME=Growli
+PROJECT_NAME=Leme
 ```
 
 ### Frontend: `.env.local`
@@ -208,8 +208,8 @@ MIT License - veja [LICENSE](LICENSE) para detalhes.
 
 ## 📞 Contato
 
-**Email:** suporte@growli.com
-**Site:** https://growli.com (em breve)
+**Email:** suporte@leme.com
+**Site:** https://leme.app.br (em breve)
 
 ---
 
@@ -223,4 +223,4 @@ MIT License - veja [LICENSE](LICENSE) para detalhes.
 
 ---
 
-🌱 **Growli - Fazendo seu negócio crescer!**
+🌱 **Leme - Crescimento financeiro sustentável!**

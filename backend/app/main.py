@@ -6,7 +6,7 @@ from app.routes.analise import router as analise_router
 
 # Inicializar aplicação
 app = FastAPI(
-    title="Growli - API de Análise Financeira",
+    title="Leme - API de Análise Financeira",
     description="API para análise financeira de pequenas e microempresas",
     version="1.0.0"
 )
@@ -24,7 +24,7 @@ app.add_middleware(
 async def root():
     """Endpoint de teste"""
     return {
-        "message": "API Growli - Análise Financeira está funcionando!",
+        "message": "API Leme - Análise Financeira está funcionando!",
         "status": "online"
     }
 

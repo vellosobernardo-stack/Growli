@@ -1,6 +1,6 @@
 'use client';
-
 import { forwardRef } from 'react';
+import { Info } from 'lucide-react';
 
 interface InputNumeroProps {
   value: number | string;
@@ -66,17 +66,19 @@ const InputNumero = forwardRef<HTMLInputElement, InputNumeroProps>(
 
     return (
       <div className={`space-y-2 ${className}`}>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="flex items-center text-sm font-medium text-gray-700">
           {label}
           {opcional && <span className="text-gray-400 ml-1">(Opcional)</span>}
           {!opcional && <span className="text-red-500 ml-1">*</span>}
           {tooltip && (
-            <span 
-              className="ml-2 text-xs text-gray-500 cursor-help" 
-              title={tooltip}
-            >
-              ℹ️
-            </span>
+            <div className="group relative inline-block ml-2">
+              <div className="p-1 bg-gray-200 rounded-full cursor-help">
+                <Info className="w-3 h-3 text-gray-600" />
+              </div>
+              <div className="invisible group-hover:visible absolute z-10 w-64 p-3 text-sm bg-gray-900 text-white rounded-lg shadow-lg -top-2 left-8">
+                {tooltip}
+              </div>
+            </div>
           )}
         </label>
         <div className="relative">
@@ -90,10 +92,10 @@ const InputNumero = forwardRef<HTMLInputElement, InputNumeroProps>(
             min={min}
             max={max}
             step={step}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]"
           />
           {sufixo && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium pointer-events-none">
               {sufixo}
             </span>
           )}

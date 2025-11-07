@@ -5,7 +5,7 @@ export const TestimonialsSection = () => {
     {
       name: "Ana Paula Silva",
       role: "Proprietária, Café Sabor & Arte",
-      content: "Antes da Growli, eu não tinha ideia de como estava minha margem de lucro real. Agora tomo decisões com muito mais segurança.",
+      content: "Antes da Leme, eu não tinha ideia de como estava minha margem de lucro real. Agora tomo decisões com muito mais segurança.",
       rating: 5
     },
     {
@@ -17,7 +17,7 @@ export const TestimonialsSection = () => {
     {
       name: "Juliana Costa",
       role: "Gestora Financeira, Boutique Elegance",
-      content: "A Growli me ajudou a identificar gargalos no fluxo de caixa que eu nem sabia que existiam. O ROI foi imediato.",
+      content: "A Leme me ajudou a identificar gargalos no fluxo de caixa que eu nem sabia que existiam. O ROI foi imediato.",
       rating: 5
     }
   ];
@@ -27,7 +27,7 @@ export const TestimonialsSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16 animate-fade-in">
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-            Empresas que confiam na Growli
+            Empresas que confiam na Leme
           </h2>
           <p className="text-xl text-muted-foreground">
             Veja o que nossos clientes dizem sobre nós

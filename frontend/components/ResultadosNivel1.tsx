@@ -75,11 +75,9 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
     t.titulo.includes('Resumo') || t.titulo.includes('Financeiro')
   );
 
-  // Extrair score
-  const score = (resultado as any).score || (resultado as any).saude_financeira_score || 75;
-
   return (
     <div className="px-6 md:px-8 lg:px-12 py-8 space-y-8">
+
       
       {/* Badge Análise Concluída */}
       <div className="flex justify-center">
@@ -88,22 +86,6 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
         </div>
       </div>
 
-      {/* Score Card */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-lg p-6 animate-fade-in">
-        <div className="flex items-center justify-center gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-blue-600 rounded-full">
-              <TrendingUp className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 font-medium">Score de Saúde Financeira</p>
-              <p className="text-4xl font-bold text-blue-600">
-                {score} <span className="text-2xl text-gray-400">/ 100</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Card Visão Básica */}
       <div className="bg-gradient-to-br from-white via-white to-green-50/30 border border-green-100 rounded-xl shadow-xl p-8 animate-fade-in">
@@ -181,12 +163,12 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
         </div>
       </div>
 
-      {/* Composição do Mês - Barras de Progresso */}
+      {/* Gráfico de barras */}
       {graficoComposicao && (
         <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-8 space-y-6">
           <div className="flex items-center gap-3">
-            <BarChart3 className="w-6 h-6 text-gray-700" />
-            <h3 className="text-xl font-semibold text-gray-900">Composição do Mês</h3>
+            <BarChart3 className="w-6 h-6 text-green-600" />
+            <h3 className="text-2xl font-semibold text-gray-900">{graficoComposicao.titulo}</h3>
           </div>
           
           <p className="text-sm text-gray-600">Distribuição dos seus valores mensais</p>

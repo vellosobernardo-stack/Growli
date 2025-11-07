@@ -27,7 +27,7 @@ export const HowItWorksSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-20 animate-fade-in">
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-            Como funciona a Growli?
+            Como funciona a Leme?
           </h2>
           <p className="text-xl text-muted-foreground">
             Transformamos dados financeiros complexos em insights práticos em apenas 3 passos

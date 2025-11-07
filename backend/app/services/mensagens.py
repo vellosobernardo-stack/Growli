@@ -313,7 +313,8 @@ def gerar_oportunidades(kpis_nivel2: Dict, receita: float) -> List[Dict]:
 
 def gerar_plano_30_60_90(kpis: Dict) -> Dict[str, List[str]]:
     """
-    Gera plano de ação 30-60-90 dias
+    Gera plano de ação 30-60-90 dias (VERSÃO ANTIGA - strings simples)
+    Mantida para compatibilidade
     """
     plano = {
         "30_dias": [
@@ -346,3 +347,168 @@ def gerar_plano_30_60_90(kpis: Dict) -> Dict[str, List[str]]:
         plano["60_dias"].insert(0, "Priorizar redução do ciclo financeiro - meta: -15 dias em 60 dias")
     
     return plano
+
+
+# ============================================
+# ✨ NOVA FUNÇÃO - PLANO ESTRUTURADO COM IA
+# ============================================
+
+def gerar_plano_30_60_90_inteligente(kpis: Dict) -> Dict[str, List[Dict]]:
+    """
+    Gera plano de ação 30-60-90 dias ESTRUTURADO (com objetos, não strings)
+    Usa IA quando possível, fallback para plano padrão estruturado
+    """
+    try:
+        # Tentar usar IA para gerar plano personalizado
+        from app.services.plano_acao_generator import gerar_plano_acao_inteligente
+        
+        # Preparar indicadores
+        nivel1 = kpis.get("nivel1", {})
+        nivel2 = kpis.get("nivel2", {})
+        nivel3 = kpis.get("nivel3", {})
+        
+        indicadores_dict = {
+            'margem_bruta': nivel1.get('margem_bruta', 0),
+            'liquidez_corrente': nivel1.get('liquidez_imediata', 0),
+            'folego_caixa': nivel1.get('folego_caixa', 0),
+            'prazo_medio_recebimento': nivel2.get('dso', 0) if nivel2 else 0,
+            'prazo_medio_pagamento': nivel2.get('dpo', 0) if nivel2 else 0,
+            'ciclo_caixa': nivel2.get('ciclo_financeiro', 0) if nivel2 else 0,
+        }
+        
+        # Gerar diagnóstico simples
+        diagnostico = []
+        margem = nivel1.get('margem_bruta', 0)
+        if margem < 20:
+            diagnostico.append(f"Margem bruta crítica de {margem:.1f}%")
+        elif margem < 30:
+            diagnostico.append(f"Margem bruta moderada de {margem:.1f}%")
+        else:
+            diagnostico.append(f"Margem bruta saudável de {margem:.1f}%")
+        
+        # Gerar oportunidades simples
+        oportunidades = []
+        if nivel2:
+            dso = nivel2.get('dso', 0)
+            if dso > 30:
+                oportunidades.append({
+                    'descricao': f'Reduzir DSO de {dso:.0f} para 30 dias',
+                    'impacto_r': 0,
+                    'impacto_percentual': 0
+                })
+        
+        # Chamar gerador inteligente
+        plano = gerar_plano_acao_inteligente(
+            indicadores=indicadores_dict,
+            diagnostico=diagnostico,
+            oportunidades=oportunidades
+        )
+        
+        return plano
+        
+    except Exception as e:
+        # Fallback: usar plano padrão estruturado
+        print(f"Erro ao gerar plano inteligente, usando fallback: {e}")
+        return gerar_plano_fallback_estruturado(kpis)
+
+
+def gerar_plano_fallback_estruturado(kpis: Dict) -> Dict[str, List[Dict]]:
+    """
+    Plano padrão estruturado (objetos, não strings) - usado como fallback
+    """
+    plano_base = {
+        "30_dias": [
+            {
+                "titulo": "Revisar Política de Cobrança",
+                "descricao": "Implementar régua de cobrança com contato a cada 3 dias e oferecer 2% de desconto para pagamentos antecipados em até 10 dias.",
+                "resultado_esperado": "Reduzir prazo médio de recebimento em 10 dias e liberar capital de giro",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Negociar Prazos com Fornecedores",
+                "descricao": "Conversar com os 5 principais fornecedores para estender prazo de pagamento de 30 para 45 dias mantendo descontos por volume.",
+                "resultado_esperado": "Melhorar ciclo de caixa em 15 dias e reduzir pressão sobre capital de giro",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Mapear Custos Variáveis",
+                "descricao": "Levantar todos os custos ligados às vendas (comissões, frete, taxas) e identificar 3 oportunidades de redução imediata.",
+                "resultado_esperado": "Reduzir custos variáveis em 5-8% e melhorar margem bruta",
+                "prioridade": "Média"
+            },
+            {
+                "titulo": "Implementar Controle Diário de Caixa",
+                "descricao": "Criar rotina de fechamento diário com projeção de 7 dias e alertas automáticos para desvios maiores que 10%.",
+                "resultado_esperado": "Aumentar previsibilidade de caixa e permitir decisões mais rápidas",
+                "prioridade": "Alta"
+            }
+        ],
+        "60_dias": [
+            {
+                "titulo": "Implementar Dashboard de KPIs",
+                "descricao": "Automatizar cálculo semanal dos 10 principais indicadores financeiros com alertas visuais por e-mail toda segunda-feira.",
+                "resultado_esperado": "Reduzir tempo de análise de 4h para 30min por semana",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Otimizar Giro de Estoque",
+                "descricao": "Aplicar curva ABC, fazer promoção agressiva de itens parados há mais de 30 dias e ajustar ponto de pedido dos itens A.",
+                "resultado_esperado": "Aumentar giro de estoque em 20% e liberar capital preso",
+                "prioridade": "Média"
+            },
+            {
+                "titulo": "Avaliar Rentabilidade por Canal",
+                "descricao": "Calcular margem real de cada canal de venda (online, loja, marketplace) descontando TODOS os custos específicos.",
+                "resultado_esperado": "Identificar canal com 30%+ de margem para concentrar esforços comerciais",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Revisar Despesas Fixas",
+                "descricao": "Renegociar ou trocar fornecedores de serviços recorrentes (aluguel, energia, telefone, software, seguros).",
+                "resultado_esperado": "Economizar 10-15% em despesas fixas mensais",
+                "prioridade": "Média"
+            }
+        ],
+        "90_dias": [
+            {
+                "titulo": "Estruturar Captação de Capital",
+                "descricao": "Preparar demonstrativo financeiro completo dos últimos 12 meses e buscar investidor-anjo ou linha de crédito estratégica.",
+                "resultado_esperado": "Captar capital para crescimento mantendo ROE acima de 15%",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Criar Reserva de Emergência",
+                "descricao": "Separar 10% do lucro líquido mensal em conta exclusiva até atingir reserva equivalente a 3 meses de despesas fixas.",
+                "resultado_esperado": "Garantir fôlego de caixa de 90 dias para imprevistos",
+                "prioridade": "Alta"
+            },
+            {
+                "titulo": "Desenvolver Plano de Crescimento",
+                "descricao": "Definir metas de receita por canal para os próximos 12 meses com base em dados históricos e benchmarks do setor.",
+                "resultado_esperado": "Estruturar crescimento de 20-30% anualizado de forma sustentável",
+                "prioridade": "Média"
+            },
+            {
+                "titulo": "Treinar Equipe em Gestão",
+                "descricao": "Capacitar 3 pessoas-chave para entender os KPIs do negócio e propor melhorias mensalmente em reunião estruturada.",
+                "resultado_esperado": "Reduzir dependência do gestor em 40% e aumentar engajamento",
+                "prioridade": "Baixa"
+            }
+        ]
+    }
+    
+    # Personalizar baseado em situação crítica
+    nivel1 = kpis.get("nivel1", {})
+    nivel2 = kpis.get("nivel2", {})
+    
+    liquidez = nivel1.get("liquidez_imediata", 1.0)
+    if liquidez < 0.6:
+        plano_base["30_dias"][0]["prioridade"] = "Alta"
+        plano_base["30_dias"][0]["descricao"] = "URGENTE: " + plano_base["30_dias"][0]["descricao"]
+    
+    if nivel2:
+        ciclo = nivel2.get("ciclo_financeiro", 0)
+        if ciclo > 45:
+            plano_base["60_dias"][1]["prioridade"] = "Alta"
+    
+    return plano_base

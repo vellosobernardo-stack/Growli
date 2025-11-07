@@ -286,20 +286,20 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
           disabled={loading}
           className="w-full h-12 text-base font-semibold text-white rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           style={{
-            backgroundColor: loading ? 'hsl(215 15% 65%)' : 'hsl(142 70% 45%)',
+            backgroundColor: loading ? 'hsl(215 15% 65%)' : '#112d4e',
             boxShadow: loading 
               ? 'none' 
-              : '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)'
+              : '0 10px 25px -5px rgba(17, 45, 78, 0.3), 0 8px 10px -6px rgba(17, 45, 78, 0.3)'
           }}
           onMouseEnter={(e) => {
             if (!loading) {
-              e.currentTarget.style.backgroundColor = 'hsl(142 70% 40%)';
+              e.currentTarget.style.backgroundColor = '#0f2640';
               e.currentTarget.style.boxShadow = '0 15px 30px -5px rgba(34, 197, 94, 0.4), 0 10px 15px -6px rgba(34, 197, 94, 0.4)';
             }
           }}
           onMouseLeave={(e) => {
             if (!loading) {
-              e.currentTarget.style.backgroundColor = 'hsl(142 70% 45%)';
+              e.currentTarget.style.backgroundColor = '#112d4e';
               e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)';
             }
           }}

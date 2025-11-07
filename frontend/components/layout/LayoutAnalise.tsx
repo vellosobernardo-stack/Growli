@@ -29,7 +29,7 @@ export default function LayoutAnalise({ children, titulo, subtitulo, nivelAtual 
             </Link>
             <div className="flex items-center gap-2">
               <TrendingUp className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">Growli</h2>
+              <h2 className="text-2xl font-bold text-primary">Leme</h2>
             </div>
           </div>
         </div>

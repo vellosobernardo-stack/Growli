@@ -25,11 +25,11 @@ export const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-card">
+    <section className="py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-            Por que escolher a Growli?
+          <h2 className="text-4xl sm:text-5xl font-bold text-primary mb-6">
+            Por que escolher a Leme?
           </h2>
           <p className="text-xl text-muted-foreground">
             Transforme dados complexos em decisões inteligentes
@@ -42,12 +42,19 @@ export const BenefitsSection = () => {
               className="text-center group animate-fade-in-up"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-secondary rounded-2xl mb-6 shadow-medium group-hover:scale-110 transition-transform duration-300">
-                <benefit.icon className="h-10 w-10 text-secondary-foreground" />
+              {/* Ícone laranja */}
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-secondary rounded-2xl mb-6 shadow-medium group-hover:scale-110 transition-transform duration-300">
+                <benefit.icon className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-3">
-                {benefit.title}
-              </h3>
+              
+              {/* Título com altura mínima para alinhamento */}
+              <div className="min-h-[56px] flex items-center justify-center mb-3">
+                <h3 className="text-xl font-semibold text-primary">
+                  {benefit.title}
+                </h3>
+              </div>
+              
+              {/* Descrição */}
               <p className="text-muted-foreground leading-relaxed">
                 {benefit.description}
               </p>
