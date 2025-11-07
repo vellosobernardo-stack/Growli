@@ -71,7 +71,7 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setDso}
               opcional
               tooltip="Média de dias que os clientes levam para pagar. Se não souber, use a média mais comum no seu setor (ex.: 30 dias)."
-              placeholder="30"
+              placeholder="0"
               sufixo="dias"
               min={0}
             />
@@ -81,7 +81,7 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setDpo}
               opcional
               tooltip="Média de dias que sua empresa leva para pagar fornecedores."
-              placeholder="25"
+              placeholder="0"
               sufixo="dias"
               min={0}
             />
@@ -117,14 +117,14 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setEstoque}
               opcional
               tooltip="Valor total dos produtos e insumos armazenados, considerando o custo de compra."
-              placeholder="40.000,00"
+              placeholder="0,00"
             />
             <InputMoeda
               label="Dívidas Totais"
               value={dividas}
               onChange={setDividas}
               tooltip="Valor total devido em financiamentos e empréstimos."
-              placeholder="80.000,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -158,7 +158,7 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setDespesasFinanceiras}
               opcional
               tooltip="Total gasto com juros e taxas bancárias no mês."
-              placeholder="2.000,00"
+              placeholder="0,00"
             />
             <InputMoeda
               label="Impostos Mensais"
@@ -166,7 +166,7 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setImpostos}
               opcional
               tooltip="Valor médio pago ou previsto de tributos sobre vendas."
-              placeholder="8.000,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -200,7 +200,7 @@ export default function FormularioNivel2({ onSubmit, onVoltar, loading = false }
               onChange={setFuncionarios}
               opcional
               tooltip="Quantidade total de colaboradores diretos da empresa (incluindo estagiários e Jovens Aprendiz)."
-              placeholder="5"
+              placeholder="0"
               min={0}
               step={1}
             />

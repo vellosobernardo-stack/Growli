@@ -101,21 +101,21 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               value={receita3MesesAtras}
               onChange={setReceita3MesesAtras}
               tooltip="Valor total vendido há 3 meses."
-              placeholder="95.000,00"
+              placeholder="0,00"
             />
             <InputMoeda
               label="2 Meses Atrás"
               value={receita2MesesAtras}
               onChange={setReceita2MesesAtras}
               tooltip="Valor total vendido há 2 meses."
-              placeholder="98.000,00"
+              placeholder="0,00"
             />
             <InputMoeda
               label="Receita do Último Mês"
               value={receita1MesAtras}
               onChange={setReceita1MesAtras}
               tooltip="Valor total vendido no último mês."
-              placeholder="100.000,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -149,7 +149,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setAliquotaImpostos}
               opcional
               tooltip="Percentual médio de impostos pagos sobre a receita. (Alíquota)"
-              placeholder="8"
+              placeholder="0"
               sufixo="%"
               min={0}
               max={100}
@@ -161,7 +161,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setDespesasVariaveis}
               opcional
               tooltip="Custos que aumentam junto com as vendas, como comissões, taxas de cartão e frete. Ex: 5% das vendas"
-              placeholder="5"
+              placeholder="0"
               sufixo="%"
               min={0}
               max={100}
@@ -199,7 +199,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setCapex}
               opcional
               tooltip="Valor que pretende investir nos próximos 6 meses (máquinas, reformas, sistemas, etc.). Ex: R$ 50.000 para novas máquinas"
-              placeholder="50.000,00"
+              placeholder="0,00"
             />
             <InputMoeda
               label="Bens e Equipamentos"
@@ -207,7 +207,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setImobilizado}
               opcional
               tooltip="Valor atual dos bens da empresa (móveis, veículos, computadores, equipamentos). Ex: R$ 150.000 em equipamentos"
-              placeholder="150.000,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -218,7 +218,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setPatrimonioLiquido}
               opcional
               tooltip="Diferença entre tudo o que a empresa possui e o que deve. Mostra o 'valor líquido' do negócio. Ex: R$ 120.000"
-              placeholder="120.000,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -252,7 +252,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               value={ticketMedio}
               onChange={setTicketMedio}
               tooltip="Valor médio que você cobra por produto/serviço. Usado para calcular a margem desejada."
-              placeholder="500,00"
+              placeholder="0,00"
             />
 
             {/* LUCRO DESEJADO */}
@@ -261,7 +261,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               value={lucroDesejado}
               onChange={setLucroDesejado}
               tooltip="Informe o quanto quer que sobre das vendas, depois dos custos."
-              placeholder="200,00"
+              placeholder="0,00"
             />
           </div>
 
@@ -300,7 +300,7 @@ export default function FormularioNivel3({ onSubmit, onVoltar, loading = false }
               onChange={setMetaPrazoRecebimento}
               opcional
               tooltip="Em quantos dias você quer que o dinheiro das vendas entre na conta."
-              placeholder="20"
+              placeholder="0"
               sufixo="dias"
               min={0}
             />

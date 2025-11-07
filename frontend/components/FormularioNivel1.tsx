@@ -165,7 +165,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             value={receitaBruta}
             onChange={setReceitaBruta}
             tooltip="Valor total vendido no mês — inclua tanto vendas à vista quanto a prazo. Ex: consultorias, produtos, serviços, notas emitidas."
-            placeholder="100.000,00"
+            placeholder="0,00"
           />
           
           <InputMoeda
@@ -174,7 +174,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             onChange={setCustoVendas}
             opcional
             tooltip="Gastos diretamente ligados à entrega do produto ou serviço. Ex: mercadorias, comissões, insumos, fretes."
-            placeholder="65.000,00"
+            placeholder="0,00"
           />
           
           <div className="md:col-span-2">
@@ -183,7 +183,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
               value={despesasFixas}
               onChange={setDespesasFixas}
               tooltip="Gastos que se repetem todo mês, mesmo sem vendas. Ex: aluguel, energia, contador, folha de pagamento."
-              placeholder="25.000,00"
+              placeholder="0,00"
             />
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             value={caixa}
             onChange={setCaixa}
             tooltip="Dinheiro disponível na empresa, incluindo físico. Ex: troco no caixa, valores recebidos em espécie."
-            placeholder="15.000,00"
+            placeholder="0,00"
           />
           
           <InputMoeda
@@ -228,7 +228,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             value={contaCorrente}
             onChange={setContaCorrente}
             tooltip="Saldo disponível nas contas bancárias da empresa (PJ)."
-            placeholder="35.000,00"
+            placeholder="0,00"
           />
         </div>
       </div>
@@ -265,7 +265,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             onChange={setContasReceber}
             opcional
             tooltip="Valores que seus clientes ainda vão pagar nos próximos 30 dias. Ex: boletos, duplicatas, vendas parceladas."
-            placeholder="30.000,00"
+            placeholder="0,00"
           />
           
           <InputMoeda
@@ -274,7 +274,7 @@ export default function FormularioNivel1({ onSubmit, loading = false }: Formular
             onChange={setContasPagar}
             opcional
             tooltip="Contas que precisam ser pagas nos próximos 30 dias. Ex: fornecedores, aluguel, impostos, folha."
-            placeholder="20.000,00"
+            placeholder="0,00"
           />
         </div>
       </div>
