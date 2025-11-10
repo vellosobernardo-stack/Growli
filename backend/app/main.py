@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os  # ← ADICIONAR ESTA LINHA
 
 # Importar a rota de análise
 from app.routes.analise import router as analise_router
@@ -12,9 +13,10 @@ app = FastAPI(
 )
 
 # Configurar CORS para permitir requisições do frontend
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # URL do seu frontend Next.js
+    allow_origins=cors_origins,  # URL do seu frontend Next.js
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
