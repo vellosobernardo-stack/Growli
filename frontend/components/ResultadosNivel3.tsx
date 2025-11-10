@@ -26,13 +26,15 @@ interface ResultadosNivel3Props {
   nivel1: ResultadoNivel;
   nivel2: ResultadoNivel;
   diagnostico_estrategia: DiagnosticoEstrategia;
+  onNovaAnalise?: () => void;
 }
 
 export default function ResultadosNivel3({ 
   resultado, 
   nivel1, 
   nivel2, 
-  diagnostico_estrategia 
+  diagnostico_estrategia,
+  onNovaAnalise
 }: ResultadosNivel3Props) {
   const [dashboardAberto, setDashboardAberto] = useState(false);
   const [hoveredKPI, setHoveredKPI] = useState<string | null>(null);
@@ -952,7 +954,10 @@ export default function ResultadosNivel3({
             <Download className="w-5 h-5" />
             Baixar Relatório PDF
           </button>
-          <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all">
+          <button 
+            onClick={onNovaAnalise}
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all"
+          >
             <RotateCcw className="w-5 h-5" />
             Nova Análise
           </button>

@@ -1,5 +1,6 @@
 'use client'
-import { ArrowLeft, TrendingUp } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { ReactNode } from "react"
 
@@ -12,9 +13,9 @@ interface LayoutAnaliseProps {
 
 export default function LayoutAnalise({ children, titulo, subtitulo, nivelAtual }: LayoutAnaliseProps) {
   const niveis = [
-    { numero: 1, label: 'Básico', cor: 'bg-primary' },
-    { numero: 2, label: 'Intermediário', cor: 'bg-secondary' },
-    { numero: 3, label: 'Avançado', cor: 'bg-accent' }
+    { numero: 1, label: 'Básico', cor: 'bg-[#112d4e]' },
+    { numero: 2, label: 'Intermediário', cor: 'bg-[#112d4e]' },
+    { numero: 3, label: 'Avançado', cor: 'bg-[#112d4e]' }
   ]
 
   return (
@@ -23,13 +24,19 @@ export default function LayoutAnalise({ children, titulo, subtitulo, nivelAtual 
       <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+            <Link href="/" className="flex items-center gap-2 text-[#112d4e] hover:text-[#112d4e]/80 transition-colors">
               <ArrowLeft className="h-5 w-5" />
               <span className="font-semibold">Voltar</span>
             </Link>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-primary">Leme</h2>
+              <Image 
+                src="/logo.svg" 
+                alt="Leme" 
+                width={24} 
+                height={24} 
+                className="h-6 w-6"
+              />
+              <h2 className="text-2xl font-bold text-[#112d4e]">Leme</h2>
             </div>
           </div>
         </div>
@@ -77,7 +84,7 @@ export default function LayoutAnalise({ children, titulo, subtitulo, nivelAtual 
                   {index < niveis.length - 1 && (
                     <div
                       className={`w-16 sm:w-24 h-1 mx-2 transition-all duration-300 ${
-                        nivel.numero < nivelAtual ? 'bg-primary' : 'bg-muted'
+                        nivel.numero < nivelAtual ? 'bg-[#112d4e]' : 'bg-muted'
                       }`}
                     />
                   )}
@@ -86,8 +93,8 @@ export default function LayoutAnalise({ children, titulo, subtitulo, nivelAtual 
             </div>
           </div>
 
-          {/* Card Principal */}
-          <div className="bg-card shadow-strong rounded-lg border border-border/50 animate-fade-in-up">
+          {/* ConteÃºdo sem Card envolvente */}
+          <div className="px-6 md:px-8 lg:px-12">
             {children}
           </div>
         </div>

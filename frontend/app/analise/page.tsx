@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -10,6 +11,7 @@ import FormularioNivel3 from '@/components/FormularioNivel3';
 import ResultadosNivel1 from '@/components/ResultadosNivel1';
 import ResultadosNivel2 from '@/components/ResultadosNivel2';
 import ResultadosNivel3 from '@/components/ResultadosNivel3';
+import ModalDadosIniciais from '@/components/ModalDadosIniciais';
 // ❌ REMOVIDO: import DiagnosticoFinal from '@/components/DiagnosticoFinal';
 import Loading from '@/components/ui/Loading';
 import AlertaErro from '@/components/ui/AlertaErro';
@@ -29,6 +31,26 @@ export default function AnaliseFinanceira() {
     voltarNivel,
     resetar,
   } = useAnalise();
+
+  // Estados para o modal de dados iniciais
+  const [modalAberto, setModalAberto] = useState(false);
+  const [dadosUsuario, setDadosUsuario] = useState<{ email: string; nomeEmpresa: string } | null>(null);
+
+  // Mostrar modal automaticamente quando chegar no nível 1 pela primeira vez
+  useEffect(() => {
+    if (nivelAtual === 1 && !resultado && !dadosUsuario) {
+      setModalAberto(true);
+    }
+  }, [nivelAtual, resultado, dadosUsuario]);
+
+  // Handler para quando o usuário preencher o modal
+  const handleDadosIniciais = (dados: { email: string; nomeEmpresa: string }) => {
+    setDadosUsuario(dados);
+    setModalAberto(false);
+    
+    // Opcional: salvar no localStorage
+    localStorage.setItem('leme_usuario', JSON.stringify(dados));
+  };
 
   // Handler para submit do Nível 1
   const handleSubmitNivel1 = async (meta: any, dados: any) => {
@@ -66,6 +88,13 @@ export default function AnaliseFinanceira() {
         background: 'linear-gradient(135deg, hsl(200 95% 97%) 0%, hsl(142 85% 97%) 100%)'
       }}
     >
+      {/* Modal de Dados Iniciais */}
+      <ModalDadosIniciais
+        isOpen={modalAberto}
+        onClose={() => setModalAberto(false)}
+        onSubmit={handleDadosIniciais}
+      />
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200/40">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -121,7 +150,7 @@ export default function AnaliseFinanceira() {
                 }`}
                 style={{
                   backgroundColor: nivelAtual >= 1 ? '#112d4e' : 'hsl(210 15% 95%)',
-                  boxShadow: nivelAtual >= 1 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
+                  boxShadow: nivelAtual >= 1 ? '0 10px 25px -5px rgba(17, 45, 78, 0.3), 0 8px 10px -6px rgba(17, 45, 78, 0.3)' : 'none'
                 }}
               >
                 1
@@ -150,7 +179,7 @@ export default function AnaliseFinanceira() {
                 }`}
                 style={{
                   backgroundColor: nivelAtual >= 2 ? '#112d4e' : 'hsl(210 15% 95%)',
-                  boxShadow: nivelAtual >= 2 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
+                  boxShadow: nivelAtual >= 2 ? '0 10px 25px -5px rgba(17, 45, 78, 0.3), 0 8px 10px -6px rgba(17, 45, 78, 0.3)' : 'none'
                 }}
               >
                 2
@@ -179,7 +208,7 @@ export default function AnaliseFinanceira() {
                 }`}
                 style={{
                   backgroundColor: nivelAtual >= 3 ? '#112d4e' : 'hsl(210 15% 95%)',
-                  boxShadow: nivelAtual >= 3 ? '0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 8px 10px -6px rgba(34, 197, 94, 0.3)' : 'none'
+                  boxShadow: nivelAtual >= 3 ? '0 10px 25px -5px rgba(17, 45, 78, 0.3), 0 8px 10px -6px rgba(17, 45, 78, 0.3)' : 'none'
                 }}
               >
                 3
@@ -234,6 +263,15 @@ export default function AnaliseFinanceira() {
                   boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
                 }}
               >
+                {/* Dados do usuário */}
+                {dadosUsuario && (
+                  <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800">
+                      <strong>Analisando para:</strong> {dadosUsuario.nomeEmpresa} • {dadosUsuario.email}
+                    </p>
+                  </div>
+                )}
+
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold mb-2" style={{ color: 'hsl(215 25% 15%)' }}>
                     Análise Básica
@@ -251,13 +289,7 @@ export default function AnaliseFinanceira() {
 
             {/* RESULTADOS NÍVEL 1 */}
             {nivelAtual === 1 && resultado?.nivel1 && (
-              <div 
-                className="bg-white rounded-lg animate-fade-in"
-                style={{
-                  border: '1px solid hsl(215 20% 88% / 0.5)',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
-                }}
-              >
+              <div className="animate-fade-in">
                 <ResultadosNivel1
                   resultado={resultado.nivel1}
                   onAvancar={handleAvancar}
@@ -284,13 +316,7 @@ export default function AnaliseFinanceira() {
 
             {/* RESULTADOS NÍVEL 2 */}
             {nivelAtual === 2 && resultado?.nivel2 && (
-              <div 
-                className="bg-white rounded-lg animate-fade-in"
-                style={{
-                  border: '1px solid hsl(215 20% 88% / 0.5)',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
-                }}
-              >
+              <div className="animate-fade-in">
                 <ResultadosNivel2
                   resultado={resultado.nivel2}
                   onAvancar={handleAvancar}
@@ -326,14 +352,15 @@ export default function AnaliseFinanceira() {
                     - Plano de ação 30-60-90
                     - CTA final com botões
                 */}
-                <ResultadosNivel3 
-  resultado={resultado.nivel3}
-  nivel1={resultado.nivel1}
-  nivel2={resultado.nivel2}
-  diagnostico_estrategia={resultado.diagnostico_estrategia}
-/>
-              </div>
-            )}
+    <ResultadosNivel3 
+      resultado={resultado.nivel3}
+      nivel1={resultado.nivel1!}
+      nivel2={resultado.nivel2!}
+      diagnostico_estrategia={resultado.diagnostico_estrategia!}
+      onNovaAnalise={resetar}
+    />
+  </div>
+)}
 
           </div>
         )}

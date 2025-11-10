@@ -76,7 +76,7 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
   );
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 py-8 space-y-8">
+    <div className="space-y-8">
 
       
       {/* Badge Análise Concluída */}
@@ -105,8 +105,8 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
       </div>
 
       {/* Indicadores-chave COM TOOLTIPS */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">Indicadores-chave do seu mês</h3>
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-6 sm:p-8 animate-fade-in">
+        <h3 className="text-xl font-semibold text-gray-900 mb-6">Indicadores-chave do seu mês</h3>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {resultado.kpis.slice(0, 5).map((kpi, index) => {

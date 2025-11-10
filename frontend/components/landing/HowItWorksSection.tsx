@@ -6,7 +6,7 @@ export const HowItWorksSection = () => {
       icon: Upload,
       number: "1",
       title: "Envie suas informações",
-      description: "Faça upload dos seus demonstrativos financeiros em PDF ou preencha manualmente dados básicos da sua empresa."
+      description: "Preencha os dados financeiros da sua empresa através de formulários simples e intuitivos."
     },
     {
       icon: LineChart,

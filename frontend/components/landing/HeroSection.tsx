@@ -82,7 +82,7 @@ const HeroSection = () => {
   <span className="block text-4xl sm:text-5xl lg:text-6xl text-primary">
     Entenda as finanças da sua empresa
   </span>
-  <span className="block text-5xl sm:text-6xl lg:text-7xl text-primary mt-2">
+  <span className="block text-4xl sm:text-5xl lg:text-6xl text-primary mt-2">
     sem complicação
   </span>
 </h1>

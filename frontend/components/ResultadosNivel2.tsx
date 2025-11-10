@@ -242,7 +242,7 @@ if (PME > 0) {
   };
 
   return (
-    <div className="px-6 md:px-8 lg:px-12 py-8 space-y-8">
+    <div className="space-y-8">
       
       {/* Badge Análise Concluída */}
       <div className="flex justify-center">
@@ -279,8 +279,8 @@ if (PME > 0) {
       )}
 
       {/* INDICADORES-CHAVE NÍVEL 2 */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900">Indicadores-chave do Nível 2</h3>
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-6 sm:p-8 animate-fade-in">
+        <h3 className="text-xl font-semibold text-gray-900 mb-6">Indicadores-chave do Nível 2</h3>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {indicadores.map((indicador) => {
