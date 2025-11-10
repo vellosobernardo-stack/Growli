@@ -63,7 +63,7 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
 
   // Calcular saldo do mês
   let saldoMes = 0;
-  if (graficoComposicao) {
+  if (graficoComposicao && graficoComposicao.tipo === 'barras') {
     const receita = graficoComposicao.valores[0] || 0;
     const custos = graficoComposicao.valores[1] || 0;
     const despesas = graficoComposicao.valores[2] || 0;
