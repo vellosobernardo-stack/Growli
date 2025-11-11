@@ -120,7 +120,7 @@ export default function GraficoBarras({
           <Bar 
             dataKey="valor" 
             radius={[8, 8, 0, 0]}
-            label={renderCustomLabel}
+            {...(mostrarPercentual && { label: renderCustomLabel })}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.cor} />
