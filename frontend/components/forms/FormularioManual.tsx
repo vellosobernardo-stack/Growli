@@ -1,5 +1,5 @@
 'use client'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Input } from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
@@ -68,7 +68,7 @@ const ANOS = Array.from({ length: 2025 - 1981 + 1 }, (_, i) => {
 })
 
 export function FormularioManual({ onSubmit, loading }: { onSubmit: (d: any) => void, loading?: boolean }) {
-  const { register, handleSubmit, watch } = useForm<DadosFinanceiros & { mes: string, ano: string }>({
+  const { register, handleSubmit, watch, control } = useForm<DadosFinanceiros & { mes: string, ano: string }>({
     defaultValues: {
       mes: new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : `${new Date().getMonth() + 1}`,
       ano: new Date().getFullYear().toString()
@@ -113,13 +113,57 @@ export function FormularioManual({ onSubmit, loading }: { onSubmit: (d: any) => 
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Select label="Setor de Atuação" {...register('setor')} options={SETORES} />
-        <Select label="Estado (Opcional)" {...register('estado')} options={[{ value: '', label: 'Selecione...' }, ...ESTADOS]} />
+        <Controller
+          name="setor"
+          control={control}
+          render={({ field }) => (
+            <Select 
+              label="Setor de Atuação" 
+              value={field.value || ''} 
+              onChange={field.onChange} 
+              options={SETORES} 
+            />
+          )}
+        />
+        <Controller
+          name="estado"
+          control={control}
+          render={({ field }) => (
+            <Select 
+              label="Estado (Opcional)" 
+              value={field.value || ''} 
+              onChange={field.onChange} 
+              options={[{ value: '', label: 'Selecione...' }, ...ESTADOS]} 
+            />
+          )}
+        />
       </div>
       
       <div className="grid grid-cols-2 gap-4">
-        <Select label="Mês" {...register('mes')} options={MESES} />
-        <Select label="Ano" {...register('ano')} options={ANOS} />
+        <Controller
+          name="mes"
+          control={control}
+          render={({ field }) => (
+            <Select 
+              label="Mês" 
+              value={field.value || ''} 
+              onChange={field.onChange} 
+              options={MESES} 
+            />
+          )}
+        />
+        <Controller
+          name="ano"
+          control={control}
+          render={({ field }) => (
+            <Select 
+              label="Ano" 
+              value={field.value || ''} 
+              onChange={field.onChange} 
+              options={ANOS} 
+            />
+          )}
+        />
       </div>
 
       <Button type="submit" loading={loading} className="w-full">
