@@ -13,7 +13,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { ResultadoNivel } from '@/types/analise';
-import GraficoBarras from './GraficoBarras';
+import GraficoBarras from './ui/GraficoBarras';
 
 interface ResultadosNivel2Props {
   resultado: ResultadoNivel;
