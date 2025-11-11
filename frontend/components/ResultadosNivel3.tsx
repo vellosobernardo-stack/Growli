@@ -273,7 +273,7 @@ export default function ResultadosNivel3({
     
     // Se ainda não tiver 3 oportunidades, pegar da API
     while (oportunidades.length < 3 && diagnostico_estrategia.oportunidades && diagnostico_estrategia.oportunidades.length > oportunidades.length) {
-      const op = diagnostico_estrategia.oportunidades[oportunidades.length];
+      const op: any = diagnostico_estrategia.oportunidades[oportunidades.length];
       oportunidades.push({
         titulo: op.descricao.split('.')[0].trim() || op.descricao.substring(0, 60).trim(),
         descricao: op.acao || op.descricao,
