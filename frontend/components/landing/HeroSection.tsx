@@ -3,7 +3,6 @@
 import { ArrowRight, Anchor } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
   return (
@@ -106,7 +105,7 @@ const HeroSection = () => {
             </Link>
             
             {/* Botão secundário - Ver como funciona */}
-            <Button 
+            <button 
               variant="outline"
               size="lg"
               className="bg-white/50 backdrop-blur-sm border-2 border-primary text-primary font-bold px-12 py-7 text-xl rounded-lg transition-all duration-300 hover:bg-white hover:scale-105 inline-flex items-center"
@@ -117,7 +116,7 @@ const HeroSection = () => {
               }}
             >
               Ver como funciona
-            </Button>
+            </button>
           </div>
           
           {/* Texto pequeno abaixo */}
