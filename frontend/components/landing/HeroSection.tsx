@@ -105,9 +105,7 @@ const HeroSection = () => {
             </Link>
             
             {/* Botão secundário - Ver como funciona */}
-            <button 
-              variant="outline"
-              size="lg"
+            <button
               className="bg-white/50 backdrop-blur-sm border-2 border-primary text-primary font-bold px-12 py-7 text-xl rounded-lg transition-all duration-300 hover:bg-white hover:scale-105 inline-flex items-center"
               onClick={() => {
                 document.getElementById('how-it-works')?.scrollIntoView({ 
