@@ -1,9 +1,9 @@
 'use client'
-import { useForm } from 'react-hook-form'
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
-import { Button } from '@/components/ui/Button'
-import { DadosFinanceiros } from '@/types'
+import  useForm  from 'react-hook-form'
+import  Input  from '@/components/ui/Input'
+import  Select  from '@/components/ui/Select'
+import  Button  from '@/components/ui/Button'
+import  DadosFinanceiros  from '@/types'
 
 const SETORES = [
   { value: 'agricultura', label: 'Agricultura, Pecuária, Produção Florestal' },
