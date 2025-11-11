@@ -77,23 +77,24 @@ export default function GraficoBarras({
     const { x, y, width, height, value } = props;
     
     if (mostrarPercentual) {
-      const percentual = calcularPercentual(value);
-      return (
-        <text 
-          x={x + width / 2} 
-          y={y + height / 2} 
-          fill="white" 
-          textAnchor="middle" 
-          dominantBaseline="middle"
-          className="text-xs font-bold"
-        >
-          {percentual}
-        </text>
-      );
-    }
-    return null;
+  const renderCustomLabel = (props: any) => {
+    const { x, y, width, height, value } = props;
+    const percentual = calcularPercentual(value);
+    
+    return (
+      <text 
+        x={x + width / 2} 
+        y={y + height / 2} 
+        fill="white" 
+        textAnchor="middle" 
+        dominantBaseline="middle"
+        className="text-xs font-bold"
+      >
+        {percentual}
+      </text>
+    );
   };
-
+ 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
