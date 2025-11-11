@@ -75,10 +75,6 @@ export default function GraficoBarras({
   // Renderizar label customizada nas barras
   const renderCustomLabel = (props: any) => {
     const { x, y, width, height, value } = props;
-    
-    if (mostrarPercentual) {
-  const renderCustomLabel = (props: any) => {
-    const { x, y, width, height, value } = props;
     const percentual = calcularPercentual(value);
     
     return (
