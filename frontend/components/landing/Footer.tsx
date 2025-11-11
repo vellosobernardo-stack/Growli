@@ -1,4 +1,4 @@
-import { Linkedin, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -12,10 +12,20 @@ export const Footer = () => {
               Transformamos dados complexos em decisões inteligentes.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-secondary-light transition-colors" aria-label="LinkedIn">
-                <Linkedin className="h-6 w-6" />
+              <a 
+                href="https://instagram.com/leme.app" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-secondary-light transition-colors" 
+                aria-label="Instagram"
+              >
+                <Instagram className="h-6 w-6" />
               </a>
-              <a href="#" className="hover:text-secondary-light transition-colors" aria-label="Email">
+              <a 
+                href="mailto:contato@leme.app.br" 
+                className="hover:text-secondary-light transition-colors" 
+                aria-label="Email"
+              >
                 <Mail className="h-6 w-6" />
               </a>
             </div>
@@ -36,7 +46,22 @@ export const Footer = () => {
             <ul className="space-y-2 text-background/80">
               <li><a href="#" className="hover:text-secondary-light transition-colors">Sobre nós</a></li>
               <li><a href="#" className="hover:text-secondary-light transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-secondary-light transition-colors">Contato</a></li>
+              <li>
+                <a 
+                  href="mailto:contato@leme.app.br" 
+                  className="hover:text-secondary-light transition-colors"
+                >
+                  Contato
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="mailto:suporte@leme.app.br" 
+                  className="hover:text-secondary-light transition-colors"
+                >
+                  Suporte
+                </a>
+              </li>
               <li><a href="#" className="hover:text-secondary-light transition-colors">Carreiras</a></li>
             </ul>
           </div>
