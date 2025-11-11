@@ -175,9 +175,12 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
 
           <div className="space-y-6">
             {graficoComposicao.labels.map((label, index) => {
-              const valor = graficoComposicao.valores[index];
-              const maxValor = Math.max(...graficoComposicao.valores);
-              const percentual = (valor / maxValor) * 100;
+  // Type guard: verificar se é GraficoBarras (tem valores)
+  if (!('valores' in graficoComposicao)) return null;
+  
+  const valor = graficoComposicao.valores[index];
+  const maxValor = Math.max(...graficoComposicao.valores);
+  const percentual = (valor / maxValor) * 100;
               
               let corBarra = 'bg-emerald-500';
               let corTexto = 'text-emerald-600';

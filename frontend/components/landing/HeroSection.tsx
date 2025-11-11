@@ -3,6 +3,7 @@
 import { ArrowRight, Anchor } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
   return (
@@ -104,15 +105,19 @@ const HeroSection = () => {
               </button>
             </Link>
             
-            {/* Botão secundário - Outline */}
-            <button 
-              className="group bg-white/50 backdrop-blur-sm border-2 border-primary text-primary font-bold px-12 py-7 text-xl rounded-lg transition-all duration-300 hover:bg-white hover:scale-105 inline-flex items-center"
+            {/* Botão secundário - Ver como funciona */}
+            <Button 
+              variant="outline"
+              size="lg"
+              className="bg-white/50 backdrop-blur-sm border-2 border-primary text-primary font-bold px-12 py-7 text-xl rounded-lg transition-all duration-300 hover:bg-white hover:scale-105 inline-flex items-center"
               onClick={() => {
-                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('how-it-works')?.scrollIntoView({ 
+                  behavior: 'smooth' 
+                });
               }}
             >
               Ver como funciona
-            </button>
+            </Button>
           </div>
           
           {/* Texto pequeno abaixo */}
