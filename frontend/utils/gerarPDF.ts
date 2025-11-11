@@ -539,7 +539,7 @@ export async function gerarRelatorioPDF(dados: DadosRelatorio) {
 
   // Configurações do PDF
   const options = {
-    margin: [10, 10, 10, 10],
+    margin: [10, 10, 10, 10] as [number, number, number, number],
     filename: `leme-relatorio-${new Date().toISOString().split('T')[0]}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
