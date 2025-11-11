@@ -139,7 +139,7 @@ export default function ResultadosNivel3({
   // ============ PROJEÇÕES DINÂMICAS DA API ============
   const graficoProjecao = resultado.graficos.find((g: any) => g.tipo === 'linha');
   
-  const projecao = graficoProjecao ? {
+  const projecao = graficoProjecao && 'series' in graficoProjecao ? {
     labels: graficoProjecao.labels,
     otimista: graficoProjecao.series.find((s: any) => s.nome === 'Otimista')?.valores || [],
     neutro: graficoProjecao.series.find((s: any) => s.nome === 'Neutro')?.valores || [],
