@@ -135,7 +135,7 @@ export default function ResultadosNivel1({ resultado, onAvancar }: ResultadosNiv
                       })}
                       {kpi.formato === 'percentual' && '%'}
                       {kpi.formato === 'dias' && ' dias'}
-                      {kpi.formato === 'indice' && ''}
+                      
                     </p>
                   </div>
                 </div>
