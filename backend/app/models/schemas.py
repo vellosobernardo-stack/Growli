@@ -150,12 +150,18 @@ class ResultadoNivel(BaseModel):
     assumptions: List[str]  # Lista de campos estimados
     missing: List[str]  # Lista de campos opcionais não preenchidos
 
+class AcaoPlano(BaseModel):
+    """Estrutura de uma ação do plano 30-60-90 dias"""
+    titulo: str
+    descricao: str
+    resultado_esperado: str
+    prioridade: str
 
 class DiagnosticoEstrategia(BaseModel):
     """Diagnóstico final e plano de ação (só no Nível 3)"""
     diagnostico: List[str]  # 3-5 frases principais
     oportunidades: List[Dict[str, Any]]  # {"descricao": "...", "impacto_r": 1000, "impacto_percentual": 5}
-    plano_30_60_90: Dict[str, List[str]]  # {"30_dias": [...], "60_dias": [...], "90_dias": [...]}
+    plano_30_60_90: Dict[str, List[AcaoPlano]]  # {"30_dias": [...], "60_dias": [...], "90_dias": [...]}
 
 
 class AnaliseResponse(BaseModel):

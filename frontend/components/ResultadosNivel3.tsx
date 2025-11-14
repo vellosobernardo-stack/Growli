@@ -422,31 +422,41 @@ export default function ResultadosNivel3({
       ],
     };
 
-    // Função para mesclar com dados da API se existirem
-    const mesclarComAPI = (acoesBase: any[], acoesAPI: string[] = []) => {
-      const resultado = [...acoesBase];
-      
-      // Substituir as 2 primeiras ações pelas da API se existirem e forem úteis
-      if (acoesAPI && acoesAPI.length > 0) {
-        acoesAPI.slice(0, 2).forEach((item, idx) => {
-          if (item && item.trim()) {
-            const partes = item.split(':');
-            const titulo = partes[0]?.trim();
-            const descricao = partes[1]?.trim() || item;
-            
-            if (titulo && descricao) {
-              resultado[idx] = {
-                titulo: titulo,
-                descricao: descricao,
-                resultado: diagnostico_estrategia.oportunidades && diagnostico_estrategia.oportunidades[idx] 
-                  ? (diagnostico_estrategia.oportunidades[idx].acao || `Melhoria de ${Math.round(diagnostico_estrategia.oportunidades[idx].impacto_percentual || 5)}% esperada`)
-                  : 'Impacto positivo nos indicadores financeiros',
-                prioridade: 'Alta',
-              };
-            }
-          }
-        });
+// Função para mesclar com dados da API se existirem
+const mesclarComAPI = (acoesBase: any[], acoesAPI: any[] = []) => {
+  const resultado = [...acoesBase];
+  
+  // Substituir TODAS as ações pelas da API se existirem (agora são objetos completos!)
+  if (acoesAPI && acoesAPI.length > 0) {
+    acoesAPI.forEach((item, idx) => {
+      // Verificar se é objeto (formato novo) ou string (formato antigo - fallback)
+      if (item && typeof item === 'object' && item.titulo) {
+        // FORMATO NOVO: objeto completo do gerador personalizado
+        resultado[idx] = {
+          titulo: item.titulo,
+          descricao: item.descricao,
+          resultado: item.resultado_esperado,
+          prioridade: item.prioridade,
+        };
+      } else if (item && typeof item === 'string' && item.trim()) {
+        // FORMATO ANTIGO: string simples (fallback)
+        const partes = item.split(':');
+        const titulo = partes[0]?.trim();
+        const descricao = partes[1]?.trim() || item;
+        
+        if (titulo && descricao) {
+          resultado[idx] = {
+            titulo: titulo,
+            descricao: descricao,
+            resultado: diagnostico_estrategia.oportunidades && diagnostico_estrategia.oportunidades[idx] 
+              ? (diagnostico_estrategia.oportunidades[idx].acao || `Melhoria de ${Math.round(diagnostico_estrategia.oportunidades[idx].impacto_percentual || 5)}% esperada`)
+              : 'Impacto positivo nos indicadores financeiros',
+            prioridade: 'Alta',
+          };
+        }
       }
+    });
+  }
       
       return resultado;
     };

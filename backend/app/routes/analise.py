@@ -54,6 +54,7 @@ from app.services.financial_calc import (
     calcular_roe,
     calcular_payback_capex,
 )
+
 from app.services.mensagens import (
     gerar_mensagem_nivel1,
     gerar_convite_nivel2,
@@ -64,7 +65,7 @@ from app.services.mensagens import (
     gerar_oportunidades,
     gerar_plano_30_60_90
 )
-
+from app.services.plano_acao_personalizado import gerar_plano_personalizado
 
 router = APIRouter()
 
@@ -253,7 +254,12 @@ async def processar_analise(request: AnaliseRequest, db: Session = Depends(get_d
             receita_base = dados_n1["receita_bruta_mensal"]
             oportunidades = gerar_oportunidades(kpis_diagnostico, receita_base)
             
-            plano_90d = gerar_plano_30_60_90(kpis_diagnostico)
+            kpis_completos = {
+                "nivel1": kpis_n1,
+                "nivel2": kpis_n2 if nivel_maximo >= 2 else None,
+                "nivel3": kpis_n3 if nivel_maximo >= 3 else None
+            }
+            plano_90d = gerar_plano_personalizado(kpis_completos, meta)
             
             response_data["diagnostico_estrategia"] = DiagnosticoEstrategia(
                 diagnostico=diagnostico,
