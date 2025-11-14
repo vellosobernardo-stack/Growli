@@ -1,6 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os  # ← ADICIONAR ESTA LINHA
+import os
+
+# ===== BANCO DE DADOS - NOVO =====
+from app.models.database import engine, Base
+from app.models.analysis_record import AnalysisRecord
+
+# Criar tabelas no banco
+Base.metadata.create_all(bind=engine)
+# =================================
 
 # Importar a rota de análise
 from app.routes.analise import router as analise_router
@@ -16,7 +24,7 @@ app = FastAPI(
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,  # URL do seu frontend Next.js
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

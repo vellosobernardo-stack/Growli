@@ -54,8 +54,13 @@ export default function AnaliseFinanceira() {
 
   // Handler para submit do Nível 1
   const handleSubmitNivel1 = async (meta: any, dados: any) => {
-    await submeterNivel1(meta, dados);
+      const metaCompleto = {
+    ...meta,
+    email: dadosUsuario?.email,
+    empresa: dadosUsuario?.nomeEmpresa
   };
+  await submeterNivel1(metaCompleto, dados);
+};
 
   // Handler para submit do Nível 2
   const handleSubmitNivel2 = async (dados: any) => {

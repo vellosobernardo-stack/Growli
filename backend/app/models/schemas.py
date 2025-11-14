@@ -48,6 +48,8 @@ class EstadoEnum(str, Enum):
 
 class MetaDados(BaseModel):
     """Informações gerais presentes em todos os níveis"""
+    email: Optional[str] = Field(None, description="Email do usuário (opcional)")  
+    empresa: Optional[str] = Field(None, description="Nome da empresa (opcional)")
     setor: SetorEnum = Field(..., description="Setor de atuação da empresa")
     estado: EstadoEnum = Field(..., description="Estado (UF) onde a empresa opera")
     mes: int = Field(..., ge=1, le=12, description="Mês de referência (1-12)")

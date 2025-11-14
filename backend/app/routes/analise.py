@@ -1,8 +1,15 @@
 """
 Rotas de Análise Financeira
 """
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import Dict, Any
+from datetime import datetime
+
+# ===== IMPORTS DO BANCO - NOVO =====
+from sqlalchemy.orm import Session
+from app.models.database import get_db
+from app.models.analysis_record import AnalysisRecord
+# ====================================
 
 from app.models.schemas import (
     AnaliseRequest, 
@@ -63,7 +70,7 @@ router = APIRouter()
 
 
 @router.post("/analise", response_model=AnaliseResponse)
-async def processar_analise(request: AnaliseRequest):
+async def processar_analise(request: AnaliseRequest, db: Session = Depends(get_db)):  # ✅ ADICIONEI db
     """
     Endpoint principal de análise financeira
     
@@ -74,6 +81,11 @@ async def processar_analise(request: AnaliseRequest):
         meta = request.meta.dict()
         setor = meta["setor"]
         nivel_maximo = meta["nivel_maximo_preenchido"]
+        
+        # ===== EXTRAIR EMAIL/EMPRESA - NOVO =====
+        email = meta.get("email")
+        empresa = meta.get("empresa")
+        # ========================================
         
         # Armazenar assumptions globais
         all_assumptions = []
@@ -134,6 +146,7 @@ async def processar_analise(request: AnaliseRequest):
         # Inicializar variáveis para evitar erro quando usuário pula o nível 2
         kpis_n2 = None
         dados_n2 = {}
+        dados_n3 = {}  
         
         if nivel_maximo >= 2 and request.nivel2:
             dados_n2 = request.nivel2.dict()
@@ -235,10 +248,8 @@ async def processar_analise(request: AnaliseRequest):
         if nivel_maximo >= 2:  # Só gera diagnóstico se tiver pelo menos nível 2
             kpis_diagnostico = kpis_n3 if nivel_maximo >= 3 else kpis_n2
             
-            # ✅ CORRIGIDO: passar apenas kpis_diagnostico (sem setor)
             diagnostico = gerar_diagnostico_final(kpis_diagnostico)
             
-            # ✅ CORRIGIDO: passar receita como segundo argumento
             receita_base = dados_n1["receita_bruta_mensal"]
             oportunidades = gerar_oportunidades(kpis_diagnostico, receita_base)
             
@@ -260,10 +271,68 @@ async def processar_analise(request: AnaliseRequest):
         response_data["status_validacao"]["avisos"] = validar_coerencia(todos_dados)
         response_data["status_validacao"]["assumptions"] = all_assumptions
         
+        # ===== SALVAR NO BANCO - NOVO =====
+        if email:
+            try:
+                # Preparar dados completos para salvar
+                dados_completos = {
+                    "nivel1": dados_n1,
+                    "nivel2": dados_n2 if request.nivel2 else None,
+                    "nivel3": dados_n3 if request.nivel3 else None,
+                    "meta": meta
+                }
+                
+                analysis_record = AnalysisRecord(
+                    email=email,
+                    empresa=empresa or "Não informado",
+                    setor=setor,
+                    periodo_referencia=datetime.now().strftime("%Y-%m"),
+                    dados_financeiros=dados_completos
+                )
+                db.add(analysis_record)
+                db.commit()
+                db.refresh(analysis_record)
+                print(f"✅ Análise salva no banco! ID: {analysis_record.id} - Email: {email}")
+            except Exception as e:
+                print(f"⚠️ Erro ao salvar no banco: {e}")
+                # Não falha a análise se não conseguir salvar
+        # ======================================
+        
         return AnaliseResponse(**response_data)
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao processar análise: {str(e)}")
+
+
+# ===== NOVO ENDPOINT: HISTÓRICO =====
+@router.get("/historico/{email}")
+async def obter_historico(email: str, db: Session = Depends(get_db)):
+    """
+    Retorna histórico de análises de um email
+    """
+    try:
+        analises = db.query(AnalysisRecord)\
+            .filter(AnalysisRecord.email == email)\
+            .order_by(AnalysisRecord.created_at.desc())\
+            .all()
+        
+        return {
+            "email": email,
+            "total_analises": len(analises),
+            "analises": [
+                {
+                    "id": a.id,
+                    "empresa": a.empresa,
+                    "setor": a.setor,
+                    "periodo": a.periodo_referencia,
+                    "data": a.created_at.isoformat()
+                }
+                for a in analises
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao buscar histórico: {str(e)}")
+# =====================================
 
 
 def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> ResultadoNivel:
@@ -301,7 +370,6 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
         ),
     ]
     
-    # ✅ CORRIGIDO: Adicionar classificação no Ponto de Equilíbrio
     if kpis["ponto_equilibrio"]:
         # Classificar baseado na relação com a receita atual
         receita = dados["receita_bruta_mensal"]
@@ -315,11 +383,10 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
                 nome="Ponto de Equilíbrio",
                 valor=kpis["ponto_equilibrio"],
                 formato="moeda",
-                classificacao=classificacao_pe  # ✅ AGORA TEM CLASSIFICAÇÃO
+                classificacao=classificacao_pe
             )
         )
     
-    # ✅ CORRIGIDO: Gráfico com cores AZUIS ao invés de verde/vermelho/laranja
     grafico_entradas_saidas = GraficoBarras(
         titulo="Entradas vs Saídas (R$)",
         labels=["Receita", "Custo das Vendas", "Despesas Fixas"],
@@ -328,20 +395,19 @@ def montar_resultado_nivel1(kpis: Dict, dados: Dict, assumptions: list) -> Resul
             dados["custo_vendas_mensal"],
             dados["despesas_fixas_mensais"]
         ],
-        cores=["#3b82f6", "#60a5fa", "#93c5fd"]  # ✅ AZUIS ao invés de verde/vermelho/laranja
+        cores=["#3b82f6", "#60a5fa", "#93c5fd"]
     )
     
-    # ✅ CORRIGIDO: Tabela com NÚMEROS PUROS ao invés de strings formatadas
     tabela_resumo = Tabela(
         titulo="Resumo Financeiro",
         colunas=["Item", "Valor (R$)"],
         linhas=[
-            ["Receita Bruta", dados['receita_bruta_mensal']],  # ✅ Número puro
-            ["Custos Diretos", dados['custo_vendas_mensal']],  # ✅ Número puro
-            ["Despesas Fixas", dados['despesas_fixas_mensais']],  # ✅ Número puro
-            ["Disponibilidades", dados['caixa'] + dados['conta_corrente']],  # ✅ Número puro
-            ["Contas a Receber (30d)", dados['contas_a_receber_30d']],  # ✅ Número puro
-            ["Contas a Pagar (30d)", dados['contas_a_pagar_30d']],  # ✅ Número puro
+            ["Receita Bruta", dados['receita_bruta_mensal']],
+            ["Custos Diretos", dados['custo_vendas_mensal']],
+            ["Despesas Fixas", dados['despesas_fixas_mensais']],
+            ["Disponibilidades", dados['caixa'] + dados['conta_corrente']],
+            ["Contas a Receber (30d)", dados['contas_a_receber_30d']],
+            ["Contas a Pagar (30d)", dados['contas_a_pagar_30d']],
         ]
     )
     
@@ -398,7 +464,7 @@ def montar_resultado_nivel2(kpis: Dict, assumptions: list) -> ResultadoNivel:
             )
         )
     
-    # Gráfico dos prazos - ✅ CORES AZUIS
+    # Gráfico dos prazos
     labels_prazos = ["DSO", "DPO"]
     valores_prazos = [kpis["dso"], kpis["dpo"]]
     
@@ -410,17 +476,17 @@ def montar_resultado_nivel2(kpis: Dict, assumptions: list) -> ResultadoNivel:
         titulo="Prazos Operacionais (dias)",
         labels=labels_prazos,
         valores=valores_prazos,
-        cores=["#3b82f6", "#60a5fa", "#93c5fd"]  # ✅ AZUIS
+        cores=["#3b82f6", "#60a5fa", "#93c5fd"]
     )
     
-    # Tabela de simulações - ✅ NÚMEROS PUROS
+    # Tabela de simulações
     tabela_simulacoes = Tabela(
         titulo="Simulações de Impacto no Caixa",
         colunas=["Ação", "Impacto (R$)"],
         linhas=[
-            ["Reduzir DSO em 10 dias", kpis['simulacao_reducao_dso']],  # ✅ Número puro
-            ["Aumentar DPO em 7 dias", kpis['simulacao_aumento_dpo']],  # ✅ Número puro
-            ["Total Potencial", kpis['simulacao_reducao_dso'] + kpis['simulacao_aumento_dpo']]  # ✅ Número puro
+            ["Reduzir DSO em 10 dias", kpis['simulacao_reducao_dso']],
+            ["Aumentar DPO em 7 dias", kpis['simulacao_aumento_dpo']],
+            ["Total Potencial", kpis['simulacao_reducao_dso'] + kpis['simulacao_aumento_dpo']]
         ]
     )
     
