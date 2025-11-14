@@ -14,7 +14,7 @@ const ProblemSection = () => {
     },
     {
       icon: FileQuestion,
-      title: "Consultorias caras e fora do alcance.",
+      title: "Consultorias caras e fora do alcance",
       description: "Serviços financeiros tradicionais custam caro e nem sempre são adaptados à realidade de PMEs."
     }
   ];
