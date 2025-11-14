@@ -83,13 +83,13 @@ const HeroSection = () => {
     Entenda as finanças da sua empresa
   </span>
   <span className="block text-4xl sm:text-5xl lg:text-6xl text-primary mt-2">
-    sem complicação
+    sem complicações
   </span>
 </h1>
           
           {/* Subtítulo */}
           <p className="text-xl sm:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-            Análises financeiras automáticas, cenários de desempenho e estratégias práticas para o crescimento do seu negócio.
+            Análises financeiras inteligentes, projeções reais e estratégias práticas para impulsionar o crescimento da sua empresa.
           </p>
           
           {/* Botões CTA */}

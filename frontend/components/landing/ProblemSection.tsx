@@ -10,11 +10,11 @@ const ProblemSection = () => {
     {
       icon: TrendingDown,
       title: "Falta de previsibilidade",
-      description: "Sem visão clara do futuro, fica difícil tomar decisões estratégicas e planejar investimentos."
+      description: "Sem uma visão clara do futuro, as decisões estratégicas se tornam incertas e os investimentos perdem direção."
     },
     {
       icon: FileQuestion,
-      title: "Consultoria cara e inacessível",
+      title: "Consultorias caras e fora do alcance.",
       description: "Serviços financeiros tradicionais custam caro e nem sempre são adaptados à realidade de PMEs."
     }
   ];

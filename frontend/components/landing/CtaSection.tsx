@@ -46,7 +46,7 @@ export const CtaSection = () => {
             </Link>
           </div>
           <p className="text-sm text-white/80">
-            Junte-se a mais de 500 empresas que já transformaram suas finanças
+            Mais de 500 empresas já transformaram suas finanças conosco — junte-se a elas.
           </p>
         </div>
       </div>
